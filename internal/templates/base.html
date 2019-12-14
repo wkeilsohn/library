@@ -7,8 +7,8 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<!-- Your scripts below -->
 	<!-- Your scripts need custom URLs so be sure to add those... -->
-	<link rel="stylesheet" type="text/css" href="static/css/base.css">
-	<script type="text/javascript" src="static/javascript/base.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/base.css') }}">
+	<script type="text/javascript" src="{{url_for('static', filename='javascript/base.js') }}"></script>
 	<title>{% block title %}{% endblock %}</title>
 </head>
 <body>

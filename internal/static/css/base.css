@@ -1,5 +1,25 @@
 body{
+	height: 100%;
+	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-color: #e474f2;
+}
+
+#boarder{
+	padding: 30%;
+	text-align: center;
+	border-radius: 25px;
+	opacity: 0.9; /* May want to change the placement of this later. */
+}
+
+#main{
+	border-radius: 25px;
+	margin: auto;
+	display: inline-block;
+/*	background-color: #9f29a3; */
+	background-color: white; /* Change once of your pictures later if you keep this. */
+	width: 100%;
+	height: 100%;
+
 }

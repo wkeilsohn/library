@@ -14,9 +14,9 @@ class AuthorForm(FlaskForm):
 
 class PublisherForm(FlaskForm):
 	Publisher = StringField('Name of Publisher', validators=[DataRequired()])
-	City = StringField('City', validators=[DataRequired()])
-	State = StringField('State/Province', validators=[DataRequired()])
-	Country = StringField('Country', validators=[DataRequired()])
+	City = StringField('City')
+	State = StringField('State/Province')
+	Country = StringField('Country')
 
 class BookForm(FlaskForm):
 	DCC = StringField('DCC Code', validators=[DataRequired()])

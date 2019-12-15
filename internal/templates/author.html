@@ -7,6 +7,7 @@
         <p>
             {{ form.FirstName.label }}<br>
             {{ form.FirstName(size=32) }}
+            <span style="color: red;">[{{ error }}]</span>
         </p>
         <p>
             {{ form.MiddleName.label }}<br>
@@ -15,6 +16,7 @@
         <p>
             {{ form.LastName.label }}<br>
             {{ form.LastName(size=50) }}
+            <span style="color: red;">[{{ error }}]</span>
         </p>
         <p>{{ form.Submit() }}</p>
     </form>

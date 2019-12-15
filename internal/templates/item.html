@@ -11,6 +11,7 @@
         <p>
             {{ form.Quantity.label }}<br>
             {{ form.Quantity(size=4) }}
+            <span style="color: red;">[{{ error }}]</span>
         </p>
         <p>{{ form.Submit() }}</p>
     </form>

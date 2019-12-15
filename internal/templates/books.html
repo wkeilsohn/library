@@ -7,14 +7,17 @@
         <p>
             {{ form.DCC.label }}<br>
             {{ form.DCC(size=20) }}
+            <span style="color: red;">[{{ error }}]</span>
         </p>
         <p>
             {{ form.Title.label }}<br>
             {{ form.Title(size=50) }}
+            <span style="color: red;">[{{ error }}]</span>
         </p>
         <p>
             {{ form.PublicationYear.label }}<br>
             {{ form.PublicationYear(size=4) }}
+            <span style="color: red;">[{{ error }}]</span>
         </p>
                 <p>
             {{ form.FirstAuthor.label }}<br>

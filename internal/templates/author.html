@@ -1,1 +1,21 @@
 {% extends "base.html" %}
+{% block title %}Author{% endblock %}
+{% block content %}
+    <h1>Add Author</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.FirstName.label }}<br>
+            {{ form.FirstName(size=32) }}
+        </p>
+        <p>
+            {{ form.MiddleName.label }}<br>
+            {{ form.MiddleName(size=32) }}
+        </p>
+        <p>
+            {{ form.LastName.label }}<br>
+            {{ form.LastName(size=32) }}
+        </p>
+        <p>{{ form.Submit() }}</p>
+    </form>
+{% endblock %}

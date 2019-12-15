@@ -19,6 +19,7 @@ class Author(db.Model):
 	def __repr__(self):
 		return '<Author: {} {} {}>'.format(self.FirstName, self.MiddleName, self.LastName)
 
+
 class State(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	State = db.Column(db.String(50), index = True, unique = True)
@@ -26,6 +27,7 @@ class State(db.Model):
 
 	def __repr__(self):
 		return '<State: {}>'.format(self.State)
+
 
 class Publisher(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -37,6 +39,7 @@ class Publisher(db.Model):
 	def __repr__(self):
 		return '<Publisher: {}>'.format(self.Publisher)
 
+
 class Holidays(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	Name = db.Column(db.String(20), unique = True, index = True)
@@ -44,6 +47,7 @@ class Holidays(db.Model):
 
 	def __repr__(self):
 		return '<Holiday: {}>'.format(self.Name)
+
 
 class BookType(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
@@ -53,6 +57,7 @@ class BookType(db.Model):
 
 	def __repr__(self):
 		return '<BookType: {}>'.format(self.Type)
+
 
 class Book(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
@@ -67,6 +72,7 @@ class Book(db.Model):
 
 	def __repr__(self):
 		return '<Book: {} by {}>'.format(self.Title, self.FirstAuthor)
+		
 
 class Inventory(db.Model):
 	id = db.Column(db.Integer, primary_key = True)

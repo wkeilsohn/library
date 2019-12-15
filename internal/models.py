@@ -1,4 +1,4 @@
-from app import db
+from internal import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -70,7 +70,7 @@ class Book(db.Model):
 
 class Inventory(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
-	Book = db.Column(db.String(120), ForeignKey('Book.Title'), index = True, unique = True)
+	Book = db.Column(db.String(120), db.ForeignKey('Book.Title'), index = True, unique = True)
 	Quantity = db.Column(db.Integer)
 
 	def __repr__(self):

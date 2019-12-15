@@ -1,2 +1,25 @@
 {% extends "base.html" %}
 {% block title %}Publisher{% endblock %}
+{% block content %}
+    <h1>Add Publisher</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.Publisher.label }}<br>
+            {{ form.Publisher(size=50) }}
+        </p>
+        <p>
+            {{ form.City.label }}<br>
+            {{ form.City(size=32) }}
+        </p>
+        <p>
+            {{ form.State.label }}<br>
+            {{ form.State(size=20) }}
+        </p>
+        <p>
+            {{ form.Country.label }}<br>
+            {{ form.Country(size=30) }}
+        </p>
+        <p>{{ form.Submit() }}</p>
+    </form>
+{% endblock %}

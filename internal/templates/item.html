@@ -1,1 +1,17 @@
 {% extends "base.html" %}
+{% block title %}Invetory{% endblock %}
+{% block content %}
+    <h1>Add Inventory</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.Material.label }}<br>
+            {{ form.Material }}
+        </p>
+        <p>
+            {{ form.Quantity.label }}<br>
+            {{ form.Quantity(size=4) }}
+        </p>
+        <p>{{ form.Submit() }}</p>
+    </form>
+{% endblock %}

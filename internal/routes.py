@@ -39,7 +39,7 @@ def item():
 @app.route("/AddPublisher/", methods=['GET', 'POST'])
 def publisher():
 	form = PublisherForm()
-	return render_template('publish.html', form = form)
+	return render_template('publisher.html', form = form)
 
 '''
 @app.route("/Lookup/", methods=['GET', 'POST'])

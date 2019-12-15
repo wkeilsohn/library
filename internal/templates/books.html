@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Books{% endblock %}
+{% block content %}
+    <h1>Add Book</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.DCC.label }}<br>
+            {{ form.DCC(size=20) }}
+        </p>
+        <p>
+            {{ form.Title.label }}<br>
+            {{ form.Title(size=50) }}
+        </p>
+        <p>
+            {{ form.PublicationYear.label }}<br>
+            {{ form.PublicationYear(size=4) }}
+        </p>
+                <p>
+            {{ form.FirstAuthor.label }}<br>
+            {{ form.FirstAuthor }}
+        </p>
+        <p>
+            {{ form.SubsequentAuthors.label }}<br>
+            {{ form.SubsequentAuthors(size=200) }}
+        </p>
+        <p>
+            {{ form.Publisher.label }}<br>
+            {{ form.Publisher }}
+        </p>
+        <p>{{ form.Submit() }}</p>
+    </form>
+{% endblock %}

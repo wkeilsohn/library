@@ -24,10 +24,9 @@ class BookForm(FlaskForm):
 	DCC = StringField('DCC Code', validators=[DataRequired()])
 	Title = StringField('Title', validators=[DataRequired()])
 	PublicationYear = IntegerField('Publication Year', validators=[DataRequired()])
-	FirstAuthor = FormField(AuthorForm)
+	FirstAuthor = FormField(AuthorForm) # These need to become selection forms at some point.
 	SubsequentAuthors = StringField('Additional Authors')
 	Publisher = FormField(PublisherForm)
-	PublishYear = IntegerField('Publication Year', validators=[DataRequired()])
 	Submit = SubmitField('Add Book')
 
 class InventoryForm(FlaskForm):

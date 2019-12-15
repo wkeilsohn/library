@@ -8,10 +8,10 @@ body{
 
 #boarder{
 	padding: 30%;
-	padding-top: 10%;
 	text-align: center;
 	border-radius: 25px;
 	opacity: 0.9;
+	margin-bottom: 30%;
 }
 
 #main{
@@ -21,6 +21,7 @@ body{
 	background-color: white;
 	width: 100%;
 	height: 100%;
+	padding-top: 10%;
 
 }
 
@@ -31,6 +32,7 @@ p{
 	text-align: center;
 	margin-right: auto;
 	margin-left: auto;
+	float: center;
 
 }
 

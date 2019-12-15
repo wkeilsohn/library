@@ -19,12 +19,14 @@ class PublisherForm(FlaskForm):
 	Country = StringField('Country')
 
 class BookForm(FlaskForm):
-	DCC = StringField('DCC Code', validators=[DataRequired()])
+	LibraryId = StringField('Library ID', validators=[DataRequired()])
 	Title = StringField('Title', validators=[DataRequired()])
-	PublicationYear = IntegerField('Publication Year', validators=[DataRequired()])
 	FirstAuthor = FormField(AuthorForm)
 	SubsequentAuthors = StringField('Additional Authors')
 	Publisher = FormField(PublisherForm)
+	PublicationYear = IntegerField('Publication Year', validators=[DataRequired()])
+	BookType = StringField('Type of Book')
+	Fiction = BooleanField('Fiction?')
 
 class AddAuthorForm(AuthorForm):
 	Submit = SubmitField('Add Author')

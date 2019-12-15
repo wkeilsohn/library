@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for
 from internal import app
 
-from internal.forms import LoginForm, AuthorForm, PublisherForm, BookForm, InventoryForm
+from internal.forms import *
 
 @app.route("/")
 @app.route("/home/")
@@ -23,12 +23,12 @@ def logout():
 
 @app.route("/AddBook/", methods=['GET', 'POST'])
 def books():
-	form = BookForm()
+	form = AddBookForm()
 	return render_template('books.html', form = form)
 
 @app.route("/AddAuthor/", methods=['GET', 'POST'])
 def author():
-	form = AuthorForm()
+	form = AddAuthorForm()
 	return render_template('author.html', form = form)
 
 @app.route("/AddItem/", methods=['GET', 'POST'])
@@ -38,7 +38,7 @@ def item():
 
 @app.route("/AddPublisher/", methods=['GET', 'POST'])
 def publisher():
-	form = PublisherForm()
+	form = AddPublisherForm()
 	return render_template('publisher.html', form = form)
 
 '''

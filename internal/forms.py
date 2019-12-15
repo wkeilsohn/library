@@ -11,26 +11,32 @@ class AuthorForm(FlaskForm):
 	FirstName = StringField('First Name', validators=[DataRequired()])
 	MiddleName = StringField('Middle Name')
 	LastName = StringField('Last Name', validators=[DataRequired()])
-	Submit = SubmitField('Add Author')
 
 class PublisherForm(FlaskForm):
 	Publisher = StringField('Name of Publisher', validators=[DataRequired()])
 	City = StringField('City', validators=[DataRequired()])
 	State = StringField('State/Province', validators=[DataRequired()])
 	Country = StringField('Country', validators=[DataRequired()])
-	Submit = SubmitField('Add Publisher')
 
 class BookForm(FlaskForm):
 	DCC = StringField('DCC Code', validators=[DataRequired()])
 	Title = StringField('Title', validators=[DataRequired()])
 	PublicationYear = IntegerField('Publication Year', validators=[DataRequired()])
-	FirstAuthor = FormField(AuthorForm) # These need to become selection forms at some point.
+	FirstAuthor = FormField(AuthorForm)
 	SubsequentAuthors = StringField('Additional Authors')
 	Publisher = FormField(PublisherForm)
+
+class AddAuthorForm(AuthorForm):
+	Submit = SubmitField('Add Author')
+
+class AddPublisherForm(PublisherForm):
+	Submit = SubmitField('Add Publisher')
+
+class AddBookForm(BookForm):
 	Submit = SubmitField('Add Book')
 
 class InventoryForm(FlaskForm):
-	Material = FormField(BookForm)
+	Material = FormField(BookForm) # This may need to become a look up of some sort later. 
 	Quantity = IntegerField('Number of Books', validators=[DataRequired()])
 	Submit = SubmitField('Add Item')
 

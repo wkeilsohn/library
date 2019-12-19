@@ -18,6 +18,26 @@ class PublisherForm(FlaskForm):
 	State = StringField('State/Province')
 	Country = StringField('Country')
 
+class BookTypeForm(FlaskForm):
+	Plan = BooleanField('Plan Book?')
+	ABC = BooleanField('ABC Book?')
+	Award = BooleanField('Award Book?')
+	BegRead = BooleanField('Beg. Reading Book?')
+	Chapter = BooleanField('Chapter Book?')
+	Biography = BooleanField('Biography Book?')
+	Mystery = BooleanField('Mystery Book?')
+	Folktales = BooleanField('Folktale Book?')
+	Game = BooleanField('Game Book?')
+	Season = BooleanField('Season Book?')
+	Holiday = StringField('Holiday Code')
+	Paired = BooleanField('Paired Book?')
+	Poetry = BooleanField('Poetry Book?')
+	Professional = BooleanField('Professional Book?')
+	Science = BooleanField('Science Book?')
+	SharedRd = BooleanField('Shared Rd. Book?')
+	Sports = BooleanField('Sports Book?')
+	Wordless = BooleanField('Wordless Book?')
+
 class BookForm(FlaskForm):
 	LibraryId = StringField('Library ID', validators=[DataRequired()])
 	Title = StringField('Title', validators=[DataRequired()])
@@ -25,7 +45,7 @@ class BookForm(FlaskForm):
 	SubsequentAuthors = StringField('Additional Authors')
 	Publisher = FormField(PublisherForm)
 	PublicationYear = IntegerField('Publication Year', validators=[DataRequired()])
-	BookType = StringField('Type of Book')
+	BookType = FormField(BookTypeForm)
 	Fiction = BooleanField('Fiction?')
 
 class AddAuthorForm(AuthorForm):

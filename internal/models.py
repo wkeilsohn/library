@@ -61,13 +61,28 @@ class Holiday(db.Model):
 class BookType(db.Model):
 	__tablename__ = 'BookType'
 	id = db.Column(db.Integer, primary_key = True)
-	OldId = db.Column(db.Integer, index = True, unique = True)
-	Type = db.Column(db.String(50), index = True, unique = True)
+	Plan = db.Column(db.Boolean, index = True)
+	ABC = db.Column(db.Boolean, index = True)
+	Award = db.Column(db.Boolean, index = True)
+	BegRead = db.Column(db.Boolean, index = True)
+	Chapter = db.Column(db.Boolean, index = True)
+	Biography = db.Column(db.Boolean, index = True)
+	Mystery = db.Column(db.Boolean, index = True)
+	Folktales = db.Column(db.Boolean, index = True)
+	Game = db.Column(db.Boolean, index = True)
+	Season = db.Column(db.Boolean, index = True)
+	Paired = db.Column(db.Boolean, index = True)
+	Poetry = db.Column(db.Boolean, index = True)
+	Professional = db.Column(db.Boolean, index = True)
+	Science = db.Column(db.Boolean, index = True)
+	SharedRd = db.Column(db.Boolean, index = True)
+	Sports = db.Column(db.Boolean, index = True)
+	Wordless = db.Column(db.Boolean, index = True)
 	Holiday = db.Column(db.String(5), db.ForeignKey('Holiday.Code'))
 	Book = db.relationship("Book")
 
 	def __repr__(self):
-		return '<BookType: {}>'.format(self.Type)
+		return '<Row Number: {}>'.format(self.id)
 
 
 class Book(db.Model):

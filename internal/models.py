@@ -1,14 +1,24 @@
 from internal import db
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from internal import login
 
-class User(db.Model):
+
+class User(UserMixin, db.Model):
 	__tablename__ = 'User'
 	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(64), index=True, unique=True)
+	Username = db.Column(db.String(64), index=True, unique=True)
 	email = db.Column(db.String(120), index=True, unique=True)
 	password_hash = db.Column(db.String(128))
 
 	def __repr__(self):
-		return '<User: {}>'.format(self.username) 
+		return '<User: {}>'.format(self.Username) 
+
+	def set_password(self, password):
+		self.password_hash = generate_password_hash(password)
+
+	def check_password(self, password):
+		return check_password_hash(self.password_hash, password)
 
 
 class Author(db.Model):
@@ -94,7 +104,7 @@ class Book(db.Model):
 	SubsequentAuthors = db.Column(db.String(300))
 	Publisher = db.Column(db.String(64), db.ForeignKey('Publisher.Publisher'), index = True)
 	PublicationYear = db.Column(db.Integer, index = True)
-	BookType = db.Column(db.String(5), db.ForeignKey('BookType.Type'))
+	BookType = db.Column(db.String(5), db.ForeignKey('BookType.id'))
 	Fiction = db.Column(db.Boolean, index = True)
 	Inventory = db.relationship("Inventory")
 
@@ -111,3 +121,6 @@ class Inventory(db.Model):
 	def __repr__(self):
 		return '<Inventory: {} copies of {}>'.format(self.Quantity, self.Book)
 
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))

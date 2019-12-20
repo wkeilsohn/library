@@ -27,7 +27,8 @@ class Author(db.Model):
 	FirstName = db.Column(db.String(64), index = True)
 	MiddleName = db.Column(db.String(64), index = True)
 	LastName = db.Column(db.String(100), index = True)
-	Book = db.relationship("Book")
+
+	Book = db.relationship("Book", backref="Author")
 
 	def __repr__(self):
 		return '<Author: {} {} {}>'.format(self.FirstName, self.MiddleName, self.LastName)
@@ -38,7 +39,8 @@ class State(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	State = db.Column(db.String(50), index = True, unique = True)
 	Abbreviation = db.Column(db.String(2), index = True, unique = True)
-	Publisher = db.relationship("Publisher")
+
+	Publisher = db.relationship("Publisher") # N/A
 
 	def __repr__(self):
 		return '<State: {}>'.format(self.State)
@@ -51,7 +53,8 @@ class Publisher(db.Model):
 	City = db.Column(db.String(64), index = True)
 	State = db.Column(db.String(50), db.ForeignKey('State.State'))
 	Country = db.Column(db.String(50), index = True)
-	Book = db.relationship("Book")
+
+	Book = db.relationship("Book", backref="Publisher")
 
 	def __repr__(self):
 		return '<Publisher: {}>'.format(self.Publisher)
@@ -62,7 +65,8 @@ class Holiday(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	Name = db.Column(db.String(20), unique = True, index = True)
 	Code = db.Column(db.String(5), unique = True, index = True)
-	BookType = db.relationship("BookType")
+
+	BookType = db.relationship("BookType", backref="Holiday")
 
 	def __repr__(self):
 		return '<Holiday: {}>'.format(self.Name)
@@ -88,8 +92,9 @@ class BookType(db.Model):
 	SharedRd = db.Column(db.Boolean, index = True)
 	Sports = db.Column(db.Boolean, index = True)
 	Wordless = db.Column(db.Boolean, index = True)
-	Holiday = db.Column(db.String(5), db.ForeignKey('Holiday.Code'))
-	Book = db.relationship("Book")
+	Code = db.Column(db.String(5), db.ForeignKey('Holiday.Code'))
+
+	Book = db.relationship("Book", backref="BookType")
 
 	def __repr__(self):
 		return '<Row Number: {}>'.format(self.id)
@@ -102,11 +107,12 @@ class Book(db.Model):
 	Title = db.Column(db.String(120), index = True, unique = True)
 	FirstAuthor = db.Column(db.String(100), db.ForeignKey('Author.LastName'), index = True)
 	SubsequentAuthors = db.Column(db.String(300))
-	Publisher = db.Column(db.String(64), db.ForeignKey('Publisher.Publisher'), index = True)
+	PublisherName = db.Column(db.String(64), db.ForeignKey('Publisher.Publisher'), index = True)
 	PublicationYear = db.Column(db.Integer, index = True)
-	BookType = db.Column(db.String(5), db.ForeignKey('BookType.id'))
+	BookTypeId = db.Column(db.String(5), db.ForeignKey('BookType.id'))
 	Fiction = db.Column(db.Boolean, index = True)
-	Inventory = db.relationship("Inventory")
+
+	Inventory = db.relationship("Inventory", backref="Book")
 
 	def __repr__(self):
 		return '<Book: {} by {}>'.format(self.Title, self.FirstAuthor)
@@ -115,7 +121,7 @@ class Book(db.Model):
 class Inventory(db.Model):
 	__tablename__ = 'Inventory'
 	id = db.Column(db.Integer, primary_key = True)
-	Book = db.Column(db.String(120), db.ForeignKey('Book.Title'), index = True, unique = True)
+	BookTitle = db.Column(db.String(120), db.ForeignKey('Book.Title'), index = True, unique = True)
 	Quantity = db.Column(db.Integer)
 
 	def __repr__(self):

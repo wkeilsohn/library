@@ -40,18 +40,19 @@ def logout():
 
 @app.route("/AddBook/", methods=['GET', 'POST'])
 def books():
-	form = AddBookForm()
+	form1 = BookForm()
+	form2 = AuthorForm()
 	return render_template('books.html', form = form)
 
 @app.route("/AddAuthor/", methods=['GET', 'POST'])
 def author():
-	form = AddAuthorForm()
+	form = AuthorForm()
 	if form.validate_on_submit():
 		author = Author(FirstName = form.FirstName.data, MiddleName = form.MiddleName.data, LastName = form.LastName.data)
 		db.session.add(user)
-        db.session.commit()
-        flash('Author Added')
-        return redirect('/AddAuthor/')
+		db.session.commit()
+		flash('Author Added')
+		return redirect('/AddAuthor/')
 	return render_template('author.html', form = form)
 
 @app.route("/AddItem/", methods=['GET', 'POST'])
@@ -60,13 +61,13 @@ def item():
 
 @app.route("/AddPublisher/", methods=['GET', 'POST'])
 def publisher():
-	form = AddPublisherForm()
+	form = PublisherForm()
 	if form.validate_on_submit():
 		publisher = Publisher(Publisher = form.Publisher.data, City = form.City.data, State = form.State.data, Country = form.Country.data)
 		db.session.add(user)
-        db.session.commit()
-        flash('Publisher Added')
-        return redirect('/AddAuthor/')
+		db.session.commit()
+		flash('Publisher Added')
+		return redirect('/AddAuthor/')
 	return render_template('publisher.html', form = form)
 
 '''

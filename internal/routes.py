@@ -46,7 +46,7 @@ def books():
 	publishers = [(i.id, i.Publisher) for i in publishers]
 	holidays = Holiday.query.all()
 	holidays = [(i.id, i.Name) for i in holidays]
-	books = Book.query.all()
+	books = Book.query.all() # Yes, if there are engough books this could become a problem...
 	books = [(i.Title) for i in books]
 	books = [j.upper() for j in books]
 	books = [z.replace(" ", "") for z in books]
@@ -81,14 +81,19 @@ def books():
 			return redirect('/AddBook/')
 	return render_template('books.html', form = form)
 
-@app.route("/AddAuthor/", methods=['GET', 'POST']) # Good!
+@app.route("/AddAuthor/", methods=['GET', 'POST']) # Good
 def author():
 	authors = Author.query.all()
-	authors = [(i.FirstName, i.LastName) for i in authors]
+	au1 = [(i.FirstName) for i in authors]
+	au2 = [(i.LastName) for i in authors]
+	authors = [(au1[x] + au2[x]) for x in range(0, len(authors))]
 	authors = [j.upper() for j in authors]
 	authors = [z.replace(" ", "") for z in authors]
 	form = AddAuthorForm()
 	if form.validate_on_submit():
+		a1 = form.FirstName.data
+		a2 = form.LastName.data
+		a = a1 + a2
 		a = a.upper()
 		a = a.replace(" ", "")
 		if a in authors:

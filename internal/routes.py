@@ -46,48 +46,79 @@ def books():
 	publishers = [(i.id, i.Publisher) for i in publishers]
 	holidays = Holiday.query.all()
 	holidays = [(i.id, i.Name) for i in holidays]
+	books = Book.query.all()
+	books = [(i.Title) for i in books]
+	books = [j.upper() for j in books]
+	books = [z.replace(" ", "") for z in books]
 	form = AddBookForm()
 	form.FirstAuthor.choices = authors
 	form.Publisher.choices = publishers
 	form.BookType.Holiday.choices = holidays
 	if form.validate_on_submit():
-		booktype = BookType(Plan = form.BookType.Plan.data, ABC = form.BookType.ABC.data, Award = form.BookType.Award.data, \
-			BegRead = form.BookType.BegRead.data, Chapter = form.BookType.Chapter.data, Biography = form.BookType.Biography.data, \
-			Mystery = form.BookType.Mystery.data, Folktales = form.BookType.Folktales.data, Game = form.BookType.Game.data, \
-			Season = form.BookType.Season.data, Code = form.BookType.Holiday.data, Paired = form.BookType.Paired.data, \
-			Poetry = form.BookType.Poetry.data, Professional = form.BookType.Professional.data, Science = form.BookType.Science.data, \
-			SharedRd = form.BookType.SharedRd.data, Sports = form.BookType.Sports.data, Wordless = form.BookType.Wordless.data)
-		db.session.add(booktype)
-		db.session.commit()
-		num = BookType.query.count()
-		bookrow = BookType.query.get(num)
-		book = Book(LibraryId = form.LibraryId.data, Title = form.Title.data, AuthorId = form.FirstAuthor.data, \
-			SubsequentAuthors = form.SubsequentAuthors.data, PublisherId = form.Publisher.data, PublicationYear = form.PublicationYear.data,\
-			BookTypeId = bookrow.id, Fiction = form.Fiction.data)
-		db.session.add(book)
-		db.session.commit()
-		flash('Book Added')
-		return redirect('/AddBook/')
+		b = form.Title.data
+		b = b.upper()
+		b = b.replace(" ", "")
+		if b in books:
+			flash('Book Already in Data Base')
+			return redirect('/AddBook/')
+		else:
+			booktype = BookType(Plan = form.BookType.Plan.data, ABC = form.BookType.ABC.data, Award = form.BookType.Award.data, \
+				BegRead = form.BookType.BegRead.data, Chapter = form.BookType.Chapter.data, Biography = form.BookType.Biography.data, \
+				Mystery = form.BookType.Mystery.data, Folktales = form.BookType.Folktales.data, Game = form.BookType.Game.data, \
+				Season = form.BookType.Season.data, Code = form.BookType.Holiday.data, Paired = form.BookType.Paired.data, \
+				Poetry = form.BookType.Poetry.data, Professional = form.BookType.Professional.data, Science = form.BookType.Science.data, \
+				SharedRd = form.BookType.SharedRd.data, Sports = form.BookType.Sports.data, Wordless = form.BookType.Wordless.data)
+			db.session.add(booktype)
+			db.session.commit()
+			num = BookType.query.count()
+			bookrow = BookType.query.get(num)
+			book = Book(LibraryId = form.LibraryId.data, Title = form.Title.data, AuthorId = form.FirstAuthor.data, \
+				SubsequentAuthors = form.SubsequentAuthors.data, PublisherId = form.Publisher.data, PublicationYear = form.PublicationYear.data,\
+				BookTypeId = bookrow.id, Fiction = form.Fiction.data)
+			db.session.add(book)
+			db.session.commit()
+			flash('Book Added')
+			return redirect('/AddBook/')
 	return render_template('books.html', form = form)
 
 @app.route("/AddAuthor/", methods=['GET', 'POST']) # Good!
 def author():
+	authors = Author.query.all()
+	authors = [(i.FirstName, i.LastName) for i in authors]
+	authors = [j.upper() for j in authors]
+	authors = [z.replace(" ", "") for z in authors]
 	form = AddAuthorForm()
 	if form.validate_on_submit():
-		author = Author(FirstName = form.FirstName.data, MiddleName = form.MiddleName.data, LastName = form.LastName.data)
-		db.session.add(author)
-		db.session.commit()
-		flash('Author Added')
-		return redirect('/AddAuthor/')
+		a = a.upper()
+		a = a.replace(" ", "")
+		if a in authors:
+			flash('Author Already in Data Base')
+			return redirect('/AddAuthor/')
+		else:
+			author = Author(FirstName = form.FirstName.data, MiddleName = form.MiddleName.data, LastName = form.LastName.data)
+			db.session.add(author)
+			db.session.commit()
+			flash('Author Added')
+			return redirect('/AddAuthor/')
 	return render_template('author.html', form = form)
 
-@app.route("/AddItem/", methods=['GET', 'POST'])
+@app.route("/AddItem/", methods=['GET', 'POST']) #Add update condition.
 def item():
 	books = Book.query.all()
 	books = [(i.id, i.Title) for i in books]
+	mater = Book.query.all()
+	mater = [(i.Title) for i in mater]
+	mater = [j.upper() for j in mater]
+	mater = [z.replace(" ", "") for z in mater]
 	form = InventoryForm()
 	form.Material.choices = books
 	if form.validate_on_submit():
+		m = form.Material.data
+		m = m.upper()
+		m = m.replace(" ", "")
+#		if m in mater:
+# Add update condition here:
+#		else:
 		item = Inventory(BookTitle = form.Material.data, Quantity = form.Quantity.data)
 		db.session.add(item)
 		db.session.commit()
@@ -99,14 +130,25 @@ def item():
 def publisher():
 	states = State.query.all()
 	states = [(i.id, i.State) for i in states]
+	pubs = Publisher.query.all()
+	pubs = [(i.Publisher) for i in pubs]
+	pubs = [j.upper() for j in pubs]
+	pubs = [z.replace(" ", "") for z in pubs]
 	form = AddPublisherForm()
 	form.State.choices = states
 	if form.validate_on_submit():
-		publisher = Publisher(Publisher = form.Publisher.data, City = form.City.data, State = form.State.data, Country = form.Country.data)
-		db.session.add(publisher)
-		db.session.commit()
-		flash('Publisher Added')
-		return redirect('/AddPublisher/')
+		p = form.Publisher.data
+		p = p.upper()
+		p = p.replace(" ", "")
+		if p in pubs:
+			flash('Publisher Already in Data Base')
+			return redirect('/AddPublisher/')
+		else:
+			publisher = Publisher(Publisher = form.Publisher.data, City = form.City.data, State = form.State.data, Country = form.Country.data)
+			db.session.add(publisher)
+			db.session.commit()
+			flash('Publisher Added')
+			return redirect('/AddPublisher/')
 	return render_template('publisher.html', form = form)
 
 '''

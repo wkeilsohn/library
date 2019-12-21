@@ -62,8 +62,23 @@ class InventoryForm(FlaskForm):
 	Quantity = IntegerField('Number of Books', validators=[DataRequired()])
 	Submit = SubmitField('Add Item')
 
-'''
-class LookupForm(FlaskForm):
-	# Add Fields
-	submit = SubmitField('Search')
-'''
+class AuthorLookupForm(FlaskForm):
+	FirstName = StringField('First Name')
+	MiddleName = StringField('Middle Name')
+	LastName = StringField('Last Name')
+	Submit = SubmitField('Search')
+
+class PublisherLookupForm(FlaskForm):
+	Publisher = StringField('Name of Publisher')
+	PublicationYear = IntegerField('Publication Year')
+	Submit = SubmitField('Search')
+
+class BookLookupForm(FlaskForm):
+	Title = StringField('Title')
+	FirstAuthor = StringField('First Author')
+	Publisher = StringField('Publisher')
+	PublicationYear = IntegerField('Publication Year')
+	BookType = FormField(BookTypeForm)
+	Holiday = SelectField('Holiday')
+	Fiction = SelectField('Fiction?')
+	Submit = SubmitField('Search')

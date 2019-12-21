@@ -107,7 +107,7 @@ def author():
 			return redirect('/AddAuthor/')
 	return render_template('author.html', form = form)
 
-@app.route("/AddItem/", methods=['GET', 'POST']) #Add update condition.
+@app.route("/AddItem/", methods=['GET', 'POST']) #Good!
 def item():
 	books = Book.query.all()
 	books = [(i.id, i.Title) for i in books]

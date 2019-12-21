@@ -112,23 +112,23 @@ def item():
 	books = Book.query.all()
 	books = [(i.id, i.Title) for i in books]
 	mater = Book.query.all()
-	mater = [(i.Title) for i in mater]
-	mater = [j.upper() for j in mater]
-	mater = [z.replace(" ", "") for z in mater]
+	mater = [(i.id) for i in mater]
 	form = InventoryForm()
 	form.Material.choices = books
 	if form.validate_on_submit():
 		m = form.Material.data
-		m = m.upper()
-		m = m.replace(" ", "")
-#		if m in mater:
-# Add update condition here:
-#		else:
-		item = Inventory(BookTitle = form.Material.data, Quantity = form.Quantity.data)
-		db.session.add(item)
-		db.session.commit()
-		flash('Inventory Added')
-		return redirect('/AddItem/')
+		if m in mater:
+			Ib = Inventory.query.filter_by(BookTitle = form.Material.data).first()
+			Ib.Quantity = Ib.Quantity + form.Quantity.data
+			db.session.commit()
+			flash('Inventory Updated')
+			return redirect('/AddItem/')
+		else:
+			item = Inventory(BookTitle = form.Material.data, Quantity = form.Quantity.data)
+			db.session.add(item)
+			db.session.commit()
+			flash('Inventory Added')
+			return redirect('/AddItem/')
 	return render_template('item.html', form = form)
 
 @app.route("/AddPublisher/", methods=['GET', 'POST']) # Good!

@@ -15,7 +15,7 @@ class AuthorForm(FlaskForm):
 class PublisherForm(FlaskForm):
 	Publisher = StringField('Name of Publisher', validators=[DataRequired()])
 	City = StringField('City')
-	State = StringField('State/Province')
+	State = SelectField('State/Province', coerce = int)
 	Country = StringField('Country')
 
 class BookTypeForm(FlaskForm):

@@ -51,7 +51,7 @@ class Publisher(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	Publisher = db.Column(db.String(64), index=True, unique=True)
 	City = db.Column(db.String(64), index = True)
-	State = db.Column(db.String(50), db.ForeignKey('State.State'))
+	State = db.Column(db.Integer, db.ForeignKey('State.id'))
 	Country = db.Column(db.String(50), index = True)
 
 	Book = db.relationship("Book", backref="Publisher")

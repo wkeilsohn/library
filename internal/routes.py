@@ -84,7 +84,10 @@ def item():
 
 @app.route("/AddPublisher/", methods=['GET', 'POST']) # Good!
 def publisher():
+	states = State.query.all()
+	states = [(i.id, i.State) for i in states]
 	form = AddPublisherForm()
+	form.State.choices = states
 	if form.validate_on_submit():
 		publisher = Publisher(Publisher = form.Publisher.data, City = form.City.data, State = form.State.data, Country = form.Country.data)
 		db.session.add(publisher)

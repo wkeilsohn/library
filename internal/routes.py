@@ -38,15 +38,18 @@ def logout():
 	logout_user()
 	return render_template('logout.html')
 
-@app.route("/AddBook/", methods=['GET', 'POST']) # Issue putting the data into the database...
+@app.route("/AddBook/", methods=['GET', 'POST']) # Good!
 def books():
 	authors = Author.query.all()
 	authors = [(i.id, i.LastName) for i in authors]
 	publishers = Publisher.query.all()
 	publishers = [(i.id, i.Publisher) for i in publishers]
+	holidays = Holiday.query.all()
+	holidays = [(i.id, i.Name) for i in holidays]
 	form = AddBookForm()
 	form.FirstAuthor.choices = authors
 	form.Publisher.choices = publishers
+	form.BookType.Holiday.choices = holidays
 	if form.validate_on_submit():
 		booktype = BookType(Plan = form.BookType.Plan.data, ABC = form.BookType.ABC.data, Award = form.BookType.Award.data, \
 			BegRead = form.BookType.BegRead.data, Chapter = form.BookType.Chapter.data, Biography = form.BookType.Biography.data, \
@@ -57,7 +60,7 @@ def books():
 		db.session.add(booktype)
 		db.session.commit()
 		num = BookType.query.count()
-		bookrow = BookType.query.get(num)# Note that up until this section (below) it works.
+		bookrow = BookType.query.get(num)
 		book = Book(LibraryId = form.LibraryId.data, Title = form.Title.data, AuthorId = form.FirstAuthor.data, \
 			SubsequentAuthors = form.SubsequentAuthors.data, PublisherId = form.Publisher.data, PublicationYear = form.PublicationYear.data,\
 			BookTypeId = bookrow.id, Fiction = form.Fiction.data)

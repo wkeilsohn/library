@@ -92,7 +92,7 @@ class BookType(db.Model):
 	SharedRd = db.Column(db.Boolean, index = True)
 	Sports = db.Column(db.Boolean, index = True)
 	Wordless = db.Column(db.Boolean, index = True)
-	Code = db.Column(db.String(5), db.ForeignKey('Holiday.Code'))
+	Code = db.Column(db.Integer, db.ForeignKey('Holiday.Code'))
 
 	Book = db.relationship("Book", backref="BookType")
 

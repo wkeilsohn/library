@@ -29,7 +29,7 @@ class BookTypeForm(FlaskForm):
 	Folktales = BooleanField('Folktale Book?')
 	Game = BooleanField('Game Book?')
 	Season = BooleanField('Season Book?')
-	Holiday = StringField('Holiday Code')
+	Holiday = SelectField('Holiday Code', coerce = int)
 	Paired = BooleanField('Paired Book?')
 	Poetry = BooleanField('Poetry Book?')
 	Professional = BooleanField('Professional Book?')

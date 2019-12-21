@@ -40,7 +40,13 @@ def logout():
 
 @app.route("/AddBook/", methods=['GET', 'POST']) # Issue putting the data into the database...
 def books():
+	authors = Author.query.all()
+	authors = [(i.id, i.LastName) for i in authors]
+	publishers = Publisher.query.all()
+	publishers = [(i.id, i.Publisher) for i in publishers]
 	form = AddBookForm()
+	form.FirstAuthor.choices = authors
+	form.Publisher.choices = publishers
 	if form.validate_on_submit():
 		booktype = BookType(Plan = form.BookType.Plan.data, ABC = form.BookType.ABC.data, Award = form.BookType.Award.data, \
 			BegRead = form.BookType.BegRead.data, Chapter = form.BookType.Chapter.data, Biography = form.BookType.Biography.data, \
@@ -49,11 +55,11 @@ def books():
 			Poetry = form.BookType.Poetry.data, Professional = form.BookType.Professional.data, Science = form.BookType.Science.data, \
 			SharedRd = form.BookType.SharedRd.data, Sports = form.BookType.Sports.data, Wordless = form.BookType.Wordless.data)
 		db.session.add(booktype)
-		db.session.commit() # Note that up until this section (below) it works.
+		db.session.commit()
 		num = BookType.query.count()
-		bookrow = BookType.query.get(num)
-		book = Book(LibraryId = form.LibraryId.data, Title = form.Title.data, FirstAuthor = form.FirstAuthor.data, \
-			SubsequentAuthors = form.SubsequentAuthors.data, PublisherName = form.Publisher.data, PublicationYear = form.PublicationYear.data,\
+		bookrow = BookType.query.get(num)# Note that up until this section (below) it works.
+		book = Book(LibraryId = form.LibraryId.data, Title = form.Title.data, AuthorId = form.FirstAuthor.data, \
+			SubsequentAuthors = form.SubsequentAuthors.data, PublisherId = form.Publisher.data, PublicationYear = form.PublicationYear.data,\
 			BookTypeId = bookrow.id, Fiction = form.Fiction.data)
 		db.session.add(book)
 		db.session.commit()

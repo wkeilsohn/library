@@ -105,9 +105,9 @@ class Book(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	LibraryId = db.Column(db.String(400), index =True)
 	Title = db.Column(db.String(120), index = True, unique = True)
-	FirstAuthor = db.Column(db.String(100), db.ForeignKey('Author.LastName'), index = True)
+	AuthorId = db.Column(db.Integer, db.ForeignKey('Author.id'), index = True)
 	SubsequentAuthors = db.Column(db.String(300))
-	PublisherName = db.Column(db.String(64), db.ForeignKey('Publisher.Publisher'), index = True)
+	PublisherId = db.Column(db.Integer, db.ForeignKey('Publisher.id'), index = True)
 	PublicationYear = db.Column(db.Integer, index = True)
 	BookTypeId = db.Column(db.Integer, db.ForeignKey('BookType.id'))
 	Fiction = db.Column(db.Boolean, index = True)
@@ -115,7 +115,7 @@ class Book(db.Model):
 	Inventory = db.relationship("Inventory", backref="Book")
 
 	def __repr__(self):
-		return '<Book: {} by {}>'.format(self.Title, self.FirstAuthor)
+		return '<Book: {} by {}>'.format(self.Title, self.AuthorId)
 		
 
 class Inventory(db.Model):

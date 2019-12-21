@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, FormField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, FormField, SelectField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -41,9 +41,9 @@ class BookTypeForm(FlaskForm):
 class BookForm(FlaskForm):
 	LibraryId = StringField('Library ID', validators=[DataRequired()])
 	Title = StringField('Title', validators=[DataRequired()])
-	FirstAuthor = FormField(AuthorForm)
+	FirstAuthor = SelectField('First Author', coerce = int)
 	SubsequentAuthors = StringField('Additional Authors')
-	Publisher = FormField(PublisherForm)
+	Publisher = SelectField('Publisher', coerce = int)
 	PublicationYear = IntegerField('Publication Year', validators=[DataRequired()])
 	BookType = FormField(BookTypeForm)
 	Fiction = BooleanField('Fiction?')

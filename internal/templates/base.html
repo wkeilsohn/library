@@ -6,7 +6,6 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-	<!-- Your scripts below -->
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/base.css') }}">
 	<script type="text/javascript" src="{{url_for('static', filename='javascript/base.js') }}"></script>
 	<title>{% block title %}{% endblock %}</title>
@@ -21,32 +20,23 @@
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
 					<a class="nav-link" href="{{url_for('home')}}">Home</a>
-      			</li>
-      			<li class="nav-item dropdown">
-        			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          				Search
-        			</a>
-        			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          				<a class="dropdown-item" href="#">Authors</a>
-          				<a class="dropdown-item" href="#">Publishers</a>
-          				<a class="dropdown-item" href="#">Books</a>
-          				<div class="dropdown-divider"></div>
-          				<a class="dropdown-item" href="#">Inventory</a>
-        			</div>
-     			</li>
-     			<li class="nav-item dropdown">
-        			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          				Add Item
-        			</a>
-        			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          				<a class="dropdown-item" href="{{url_for('author')}}">Authors</a>
-          				<a class="dropdown-item" href="{{url_for('publisher')}}">Publishers</a>
-          				<a class="dropdown-item" href="{{url_for('books')}}">Books</a>
-          				<div class="dropdown-divider"></div>
-          				<a class="dropdown-item" href="{{url_for('item')}}">New Inventory</a>
-        			</div>
-        		</li>
-        	</ul>
+      	</li>
+<!--        <li class="nav-item">
+          <a class="nav-link" href="#">Search</a>
+        </li>
+-->     		<li class="nav-item dropdown">
+        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          	Add Item
+        	</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{url_for('author')}}">Authors</a>
+              <a class="dropdown-item" href="{{url_for('publisher')}}">Publishers</a>
+              <a class="dropdown-item" href="{{url_for('books')}}">Books</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{url_for('item')}}">New Inventory</a>
+            </div>
+        </li>
+      </ul>
         	<ul class="navbar-nav ml-auto">
         		<li class="nav-item">
 					<a class="nav-link" href="{{url_for('about')}}">About</a>
@@ -54,7 +44,7 @@
             <li class="nav-item">
           <a class="nav-link" href="{{url_for('logout')}}"><i class="fas fa-door-open"></i></a>
             </li>
-   			</ul>
+   			  </ul>
  		</div>
 	</nav>
 	<div>

@@ -58,7 +58,7 @@ class AddBookForm(BookForm):
 	Submit = SubmitField('Add Book')
 
 class InventoryForm(FlaskForm):
-	Material = FormField(BookForm) # This may need to become a look up of some sort later. 
+	Material = SelectField('Book Title', coerce = int) 
 	Quantity = IntegerField('Number of Books', validators=[DataRequired()])
 	Submit = SubmitField('Add Item')
 

@@ -121,11 +121,11 @@ class Book(db.Model):
 class Inventory(db.Model):
 	__tablename__ = 'Inventory'
 	id = db.Column(db.Integer, primary_key = True)
-	BookTitle = db.Column(db.String(120), db.ForeignKey('Book.Title'), index = True, unique = True)
+	BookTitle = db.Column(db.Integer, db.ForeignKey('Book.Title'), index = True) # Come back later for an update!
 	Quantity = db.Column(db.Integer)
 
 	def __repr__(self):
-		return '<Inventory: {} copies of {}>'.format(self.Quantity, self.Book)
+		return '<Inventory: {} copies of {}>'.format(self.Quantity, self.BookTitle)
 
 @login.user_loader
 def load_user(id):

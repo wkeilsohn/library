@@ -83,6 +83,16 @@ def author():
 
 @app.route("/AddItem/", methods=['GET', 'POST'])
 def item():
+	books = Book.query.all()
+	books = [(i.id, i.Title) for i in books]
+	form = InventoryForm()
+	form.Material.choices = books
+	if form.validate_on_submit():
+		item = Inventory(BookTitle = form.Material.data, Quantity = form.Quantity.data)
+		db.session.add(item)
+		db.session.commit()
+		flash('Inventory Added')
+		return redirect('/AddItem/')
 	return render_template('item.html', form = form)
 
 @app.route("/AddPublisher/", methods=['GET', 'POST']) # Good!

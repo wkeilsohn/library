@@ -38,7 +38,7 @@ def logout():
 	logout_user()
 	return render_template('logout.html')
 
-@app.route("/AddBook/", methods=['GET', 'POST'])
+@app.route("/AddBook/", methods=['GET', 'POST']) # Issue putting the data into the database...
 def books():
 	form = AddBookForm()
 	if form.validate_on_submit():
@@ -49,10 +49,12 @@ def books():
 			Poetry = form.BookType.Poetry.data, Professional = form.BookType.Professional.data, Science = form.BookType.Science.data, \
 			SharedRd = form.BookType.SharedRd.data, Sports = form.BookType.Sports.data, Wordless = form.BookType.Wordless.data)
 		db.session.add(booktype)
-		db.session.commit()
+		db.session.commit() # Note that up until this section (below) it works.
+		num = BookType.query.count()
+		bookrow = BookType.query.get(num)
 		book = Book(LibraryId = form.LibraryId.data, Title = form.Title.data, FirstAuthor = form.FirstAuthor.data, \
 			SubsequentAuthors = form.SubsequentAuthors.data, PublisherName = form.Publisher.data, PublicationYear = form.PublicationYear.data,\
-			BookTypeId = booktype.id, Fiction = form.Fiction.data)
+			BookTypeId = bookrow.id, Fiction = form.Fiction.data)
 		db.session.add(book)
 		db.session.commit()
 		flash('Book Added')

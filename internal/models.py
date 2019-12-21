@@ -109,7 +109,7 @@ class Book(db.Model):
 	SubsequentAuthors = db.Column(db.String(300))
 	PublisherName = db.Column(db.String(64), db.ForeignKey('Publisher.Publisher'), index = True)
 	PublicationYear = db.Column(db.Integer, index = True)
-	BookTypeId = db.Column(db.String(5), db.ForeignKey('BookType.id'))
+	BookTypeId = db.Column(db.Integer, db.ForeignKey('BookType.id'))
 	Fiction = db.Column(db.Boolean, index = True)
 
 	Inventory = db.relationship("Inventory", backref="Book")

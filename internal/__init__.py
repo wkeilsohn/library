@@ -8,6 +8,7 @@ from flask_wtf.csrf import CSRFProtect
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+engine = db.create_engine(Config.SQLALCHEMY_DATABASE_URI, {}) # Apparently, this shouldn't exist(?)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'

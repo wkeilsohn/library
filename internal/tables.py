@@ -1,4 +1,4 @@
-from flask_table import Table, Col
+from flask_table import Table, Col, BoolCol
 
 class AuthorResults(Table):
 	id = Col('id', show = False)
@@ -19,8 +19,8 @@ class BookResults(Table):
 	LibraryId = Col('Library Id')
 	Title = Col('Title')
 	AuthorId = Col('Author')
-	SubsequentAuthors = Col('Additional Authors')
+	SubsequentAuthors = Col('Additional Authors', show = False)
 	PublisherId = Col('Publisher')
 	PublicationYear = Col('Publication Year')
-	BookTypeId = Col('Book Type')
-	Fiction = Col('Fiction')
+	BookTypeId = Col('Book Type', show = False)
+	Fiction = BoolCol('Fiction')

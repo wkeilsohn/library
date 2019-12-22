@@ -1,10 +1,11 @@
 from flask import render_template, flash, redirect, url_for, request
-from internal import app, db
+from internal import app, db, engine
 from internal.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
 from internal.models import *
 from internal.tables import *
 from werkzeug.urls import url_parse
+import pandas as pd
 
 @app.route("/") # Good...Just add Search/Navigation Features.
 @app.route("/home/")
@@ -184,13 +185,19 @@ def publishersearch():
 		if form.validate_on_submit():
 			Pub = form.Publisher.data
 			City = form.City.data
-			State = form.State.data # This is a place to improve later.
+			Sd = form.State.data
+			s = State.query.all()
 			Country = form.Country.data
-			filter_data = {'Publisher': Pub, 'City': City, 'State': State, 'Country': Country}
+			filter_data = {'Publisher': Pub, 'City': City, 'State': Sd, 'Country': Country}
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
 			pb = Publisher.query.filter_by(**filter_data).all()
-			tab = PublisherResults(pb)
-			return render_template('results.html', table = tab)
+			tpd = pd.DataFrame.from_records([i.to_dic() for i in pb])
+			sls = list(tpd.loc[:,'State'])
+			stls = list()
+			for j in sls:
+				stls = stls.append(s[j-1].Abbreviation)
+			tpd['State'] = stls
+#			return render_template('results.html', table = # Something Needs to go here.)
 	return render_template('publishersearch.html', form = form)
 
 @app.route("/BookSearch/", methods=['GET', 'POST'])

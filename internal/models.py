@@ -33,6 +33,9 @@ class Author(db.Model):
 	def __repr__(self):
 		return '<Author: {} {} {}>'.format(self.FirstName, self.MiddleName, self.LastName)
 
+	def to_dic(self):
+		return {'id': self.id, 'FirstName': self.FirstName, 'MiddleName': self.MiddleName, 'LastName': self.LastName}
+
 
 class State(db.Model):
 	__tablename__ = 'State'
@@ -58,6 +61,9 @@ class Publisher(db.Model):
 
 	def __repr__(self):
 		return '<Publisher: {}>'.format(self.Publisher)
+
+	def to_dic(self):
+		return {'id': self.id, 'Publisher': self.Publisher, 'City': self.City, 'State': self.State, 'Country': self.Country}
 
 
 class Holiday(db.Model):

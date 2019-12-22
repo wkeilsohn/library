@@ -182,15 +182,15 @@ def publishersearch():
 	form = PublisherLookupForm()
 	if request.method == 'POST':
 		if form.validate_on_submit():
-			Publisher = form.Publisher.data
+			Pub = form.Publisher.data
 			City = form.City.data
 			State = form.State.data # This is a place to improve later.
 			Country = form.Country.data
-			filter_data = {'Publisher': Publisher, 'City': City, 'State': State, 'Country': Country}
+			filter_data = {'Publisher': Pub, 'City': City, 'State': State, 'Country': Country}
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
 			pb = Publisher.query.filter_by(**filter_data).all()
 			tab = PublisherResults(pb)
-			return render_template('results.htm', table = tab)
+			return render_template('results.html', table = tab)
 	return render_template('publishersearch.html', form = form)
 
 @app.route("/BookSearch/", methods=['GET', 'POST'])
@@ -228,5 +228,5 @@ def pooksearch():
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
 			bb = Book.query.filter_by(**filter_data).all()
 			tab = BookResults(bb)
-			return render_template('results.htm', table = tab)
+			return render_template('results.html', table = tab)
 	return render_template('booksearch.html', form = form)

@@ -9,7 +9,9 @@ class AuthorResults(Table):
 class PublisherResults(Table):
 	id = Col('id', show = False)
 	Publisher = Col('Publisher')
-	PublicationYear = Col('Publication Year')
+	City = Col('City')
+	State = Col('State/Province')
+	Country = Col('Country')
 
 
 class BookResults(Table):

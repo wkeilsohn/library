@@ -3,6 +3,7 @@ from internal import app, db
 from internal.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
 from internal.models import *
+from internal.tables import *
 from werkzeug.urls import url_parse
 
 @app.route("/") # Good...Just add Search/Navigation Features.
@@ -156,9 +157,76 @@ def publisher():
 			return redirect('/AddPublisher/')
 	return render_template('publisher.html', form = form)
 
-'''
-@app.route("/Lookup/", methods=['GET', 'POST'])
-def loggin():
-	form = LookupForm()
-	return render_template('lookup.html', form = form)
-'''
+
+@app.route("/Results/", methods=['GET', 'POST'])
+def results(table):
+	return render_template('results.html', table = table)
+
+@app.route("/AuthorSearch/", methods=['GET', 'POST'])
+def authorsearch():
+	form = AuthorLookupForm()
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			FirstName = form.FirstName.data
+			MiddleName = form.MiddleName.data
+			LastName = form.LastName.data
+			filter_data = {'FirstName': FirstName, 'MiddleName': MiddleName, 'LastName': LastName}
+			filter_data = {key: value for (key, value) in filter_data.items() if value}
+			au = Author.query.filter_by(**filter_data).all() 
+			tab = AuthorResults(au)
+			return render_template('results.html', table = tab)
+	return render_template('authorsearch.html', form = form)
+
+@app.route("/PublisherSearch/", methods=['GET', 'POST'])
+def publishersearch():
+	form = PublisherLookupForm()
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			Publisher = form.Publisher.data
+			City = form.City.data
+			State = form.State.data # This is a place to improve later.
+			Country = form.Country.data
+			filter_data = {'Publisher': Publisher, 'City': City, 'State': State, 'Country': Country}
+			filter_data = {key: value for (key, value) in filter_data.items() if value}
+			pb = Publisher.query.filter_by(**filter_data).all()
+			tab = PublisherResults(pb)
+			return render_template('results.htm', table = tab)
+	return render_template('publishersearch.html', form = form)
+
+@app.route("/BookSearch/", methods=['GET', 'POST'])
+def pooksearch():
+	form = BookLookupForm()
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			LastName = form.FirstAuthor.data
+			A_data = {'LastName': LastName}
+			A_data = {key: value for (key, value) in A_data.items() if value}
+			if len(A_data) > 0:
+				a = Author.query.filter_by(**A_data).first() # Yes, it only gets the first, so this isn't optimal.
+				if a is None:
+					AuthorId = ''
+				else:
+					AuthorId = a.id
+			Publisher = form.Publisher.data
+			P_data = {'Publisher': Publisher}
+			P_data = {key: value for (key, value) in P_data.items() if value}
+			if len(P_data) > 0:
+				p = Publisher.query.filter_by(**P_data).first()  # Here.
+				if p is None:
+					PublisherId = ''
+				else:
+					PublisherId = p.id
+
+			BookTypeId = form.BookType.data
+			Holiday = form.Holiday.data
+
+			Title = form.Title.data
+			PublicationYear = form.PublicationYear.data
+			Fiction = form.Fiction.data
+			filter_data = {'Title': Title, 'AuthorId': AuthorId, 'PublisherId': PublisherId, 'BookTypeId': BookTypeId, \
+			'PublicationYear': PublicationYear, 'Fiction': Fiction}
+			filter_data = {key: value for (key, value) in filter_data.items() if value}
+			bb = Book.query.filter_by(**filter_data).all()
+			tab = BookResults(bb)
+			return render_template('results.htm', table = tab)
+	return render_template('booksearch.html', form = form)

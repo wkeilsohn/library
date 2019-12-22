@@ -13,4 +13,4 @@ login = LoginManager(app)
 login.login_view = 'login'
 csrf = CSRFProtect(app)
 
-from internal import routes, errors, models
+from internal import routes, errors, models, tables

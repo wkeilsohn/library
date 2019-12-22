@@ -70,12 +70,14 @@ class AuthorLookupForm(FlaskForm):
 
 class PublisherLookupForm(FlaskForm):
 	Publisher = StringField('Name of Publisher')
-	PublicationYear = IntegerField('Publication Year')
+	City = StringField('City')
+	State = StringField('State/Province')
+	Country = StringField('Country')
 	Submit = SubmitField('Search')
 
 class BookLookupForm(FlaskForm):
 	Title = StringField('Title')
-	FirstAuthor = StringField('First Author')
+	FirstAuthor = StringField('First Author Last Name')
 	Publisher = StringField('Publisher')
 	PublicationYear = IntegerField('Publication Year')
 	BookType = FormField(BookTypeForm)

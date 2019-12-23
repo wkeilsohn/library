@@ -79,7 +79,7 @@ class BookLookupForm(FlaskForm):
 	Title = StringField('Title')
 	FirstAuthor = StringField('First Author Last Name')
 	Publisher = StringField('Publisher')
-	PublicationYear = IntegerField('Publication Year')
+	PublicationYear = StringField('Publication Year')
 	BookType = FormField(BookTypeForm)
 	Fiction = BooleanField('Fiction?')
 	Submit = SubmitField('Search')

@@ -212,9 +212,9 @@ def booksearch():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			### Search for Book Type First. ###
-			Code = form.Holiday.data
+			Code = form.BookType.Holiday.data
 			H_data = {'id': Code}
-			H_data = {k: value for (key, value) in H_data.items() if value}
+			H_data = {key: value for (key, value) in H_data.items() if value}
 			if len(H_data) > 0:
 				h = Holiday.query.filter_by(**H_data).first()
 				if h is None:
@@ -227,13 +227,14 @@ def booksearch():
 			'Mystery': form.BookType.Mystery.data, 'Folktales': form.BookType.Folktales, 'Game': form.BookType.Game.data, 'Season': form.BookType.Season.data, \
 			'Code': Code, 'Paired': form.BookType.Paired.data, 'Poetry': form.BookType.Poetry.data, 'Professional': form.BookType.Professional.data, \
 			'Science': form.BookType.Science.data, 'SharedRd': form.BookType.SharedRd.data, 'Sports': form.BookType.Sports.data, 'Wordless': form.BookType.Wordless.data}
+			bt_data = {key: '' for (key, value) in bt_data.items() if value == False}
+			print(bt_data)
 			bt_data = {key: value for (key, value) in bt_data.items() if value}
 			btb = BookType.query.filter_by(**bt_data).all()
 			btls = [i.id for i in btb]
-			print(btls) # Due to them all being boolean vaues, it converts their absence to 'False'
 			### Then Search for the rest of the book ###
-			LastName = form.FirstAuthor.data
-			A_data = {'LastName': LastName}
+			AuthorId = form.FirstAuthor.data
+			A_data = {'LastName': AuthorId}
 			A_data = {key: value for (key, value) in A_data.items() if value}
 			if len(A_data) > 0:
 				a = Author.query.filter_by(**A_data).first() # Yes, it only gets the first, so this isn't optimal.
@@ -242,8 +243,8 @@ def booksearch():
 				else:
 					AuthorId = a.id
 			a = Author.query.all()
-			Publisher = form.Publisher.data
-			P_data = {'Publisher': Publisher}
+			PublisherId = form.Publisher.data
+			P_data = {'Publisher': PublisherId}
 			P_data = {key: value for (key, value) in P_data.items() if value}
 			if len(P_data) > 0:
 				p = Publisher.query.filter_by(**P_data).first()  # Same Here.
@@ -254,35 +255,36 @@ def booksearch():
 			p = Publisher.query.all()
 			Title = form.Title.data
 			PublicationYear = form.PublicationYear.data
+			if len(PublicationYear) > 0:
+				PublicationYear = int(PublicationYear)
 			Fiction = form.Fiction.data
-			filter_data = {'Title': Title, 'AuthorId': AuthorId, 'PublisherId': PublisherId, 'BookTypeId': BookTypeId, \
+			filter_data = {'Title': Title, 'FirstAuthor': AuthorId, 'PublisherId': PublisherId, \
 			'PublicationYear': PublicationYear, 'Fiction': Fiction}
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
 			bb = Book.query.filter_by(**filter_data).filter(Book.BookTypeId.in_(btls)).all() # Lots of filtering.
-			tpd = pd.DataFrame.from_records([i.ro_dic() for i in bb])
-			als = list(tpb.loc[:, 'AuthorId'])
-			pls = list(tpb.loc[:, 'PublisherId'])
-			hls = list(tpb.loc[:, 'Code'])
+			tpd = pd.DataFrame.from_records([i.to_dic() for i in bb])
+			als = list(tpd.loc[:, 'AuthorId'])
+			pls = list(tpd.loc[:, 'PublisherId'])
+#			hls = list(tpd.loc[:, 'Code'])
 			lals = list()
 			lpls = list()
 			lhls = list()
 			for j in als:
 				z = [a[j-1].LastName]
 				lals = lals + z
-			lals.pop()
 			for x in pls:
 				z = [p[x-1].Publisher]
 				lpls = lpls + z
-			lplp.pop()
+			'''
 			for k in hls:
 				z = [h[k-1].Name]
 				lhls = lhls + z
-			lhls.pop()
+			'''
 			tpd['AuthorId']=lals
 			tpd['PublisherId']=lpls
-			tpd['Code']=lhls
+#			tpd['Code']=lhls
 			# Add the other values/portions of the dataframe
-			tpd.rename({'AuthorId': 'Author Last Name', 'PublisherId': 'Publisher', 'Code': 'Holiday'})
+			tpd.rename({'AuthorId': 'Author Last Name', 'PublisherId': 'Publisher'})
 			tpd = tpd.drop(columns=['id'])
 			return render_template('results.html', table = tpd.to_html(), tp = 'str')
 	return render_template('booksearch.html', form = form)

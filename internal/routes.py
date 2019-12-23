@@ -17,7 +17,7 @@ def home():
 def about():
 	return render_template('about.html')
 
-@app.route("/login/", methods=['GET', 'POST']) # Good!
+@app.route("/login/", methods=['GET', 'POST'])
 def login():
 	if current_user.is_authenticated:
 		return redirect('/home/')
@@ -35,12 +35,12 @@ def login():
 		return redirect('/home/')
 	return render_template('login.html', form = form)
 
-@app.route("/logout/") # Good!
+@app.route("/logout/")
 def logout():
 	logout_user()
 	return render_template('logout.html')
 
-@app.route("/AddBook/", methods=['GET', 'POST']) # Good!
+@app.route("/AddBook/", methods=['GET', 'POST'])
 def books():
 	authors = Author.query.all()
 	authors = [(i.id, i.LastName) for i in authors]
@@ -83,7 +83,7 @@ def books():
 			return redirect('/AddBook/')
 	return render_template('books.html', form = form)
 
-@app.route("/AddAuthor/", methods=['GET', 'POST']) # Good
+@app.route("/AddAuthor/", methods=['GET', 'POST'])
 def author():
 	authors = Author.query.all()
 	au1 = [(i.FirstName) for i in authors]
@@ -109,7 +109,7 @@ def author():
 			return redirect('/AddAuthor/')
 	return render_template('author.html', form = form)
 
-@app.route("/AddItem/", methods=['GET', 'POST']) #Good!
+@app.route("/AddItem/", methods=['GET', 'POST'])
 def item():
 	books = Book.query.all()
 	books = [(i.id, i.Title) for i in books]
@@ -133,7 +133,7 @@ def item():
 			return redirect('/AddItem/')
 	return render_template('item.html', form = form)
 
-@app.route("/AddPublisher/", methods=['GET', 'POST']) # Good!
+@app.route("/AddPublisher/", methods=['GET', 'POST'])
 def publisher():
 	states = State.query.all()
 	states = [(i.id, i.State) for i in states]
@@ -195,19 +195,43 @@ def publishersearch():
 			sls = list(tpd.loc[:,'State'])
 			stls = list()
 			for j in sls:
-				z = [stls.append(s[j-1].Abbreviation)]
+				z = [s[j-1].Abbreviation]
 				stls = stls + z
-			stls.pop()
+#			stls.pop() # So... apparently this breaks it here.
 			tpd['State'] = stls
 			tpd = tpd.drop(columns=['id'])
 			return render_template('results.html', table = tpd.to_html(), tp = 'str')
 	return render_template('publishersearch.html', form = form)
 
 @app.route("/BookSearch/", methods=['GET', 'POST'])
-def pooksearch():
+def booksearch():
+	holidays = Holiday.query.all()
+	holidays = [(i.id, i.Name) for i in holidays]
 	form = BookLookupForm()
+	form.BookType.Holiday.choices = holidays
 	if request.method == 'POST':
 		if form.validate_on_submit():
+			### Search for Book Type First. ###
+			Code = form.Holiday.data
+			H_data = {'id': Code}
+			H_data = {k: value for (key, value) in H_data.items() if value}
+			if len(H_data) > 0:
+				h = Holiday.query.filter_by(**H_data).first()
+				if h is None:
+					Code = ''
+				else:
+					Code = h.id
+			h = Holiday.query.all()
+			bt_data = {'Plan': form.BookType.Plan.data, 'ABC': form.BookType.ABC.data, 'Award': form.BookType.Award.data, \
+			'BegRead': form.BookType.BegRead.data, 'Chapter': form.BookType.Chapter.data, 'Biography': form.BookType.Biography.data, \
+			'Mystery': form.BookType.Mystery.data, 'Folktales': form.BookType.Folktales, 'Game': form.BookType.Game.data, 'Season': form.BookType.Season.data, \
+			'Code': Code, 'Paired': form.BookType.Paired.data, 'Poetry': form.BookType.Poetry.data, 'Professional': form.BookType.Professional.data, \
+			'Science': form.BookType.Science.data, 'SharedRd': form.BookType.SharedRd.data, 'Sports': form.BookType.Sports.data, 'Wordless': form.BookType.Wordless.data}
+			bt_data = {key: value for (key, value) in bt_data.items() if value}
+			btb = BookType.query.filter_by(**bt_data).all()
+			btls = [i.id for i in btb]
+			print(btls) # Due to them all being boolean vaues, it converts their absence to 'False'
+			### Then Search for the rest of the book ###
 			LastName = form.FirstAuthor.data
 			A_data = {'LastName': LastName}
 			A_data = {key: value for (key, value) in A_data.items() if value}
@@ -217,26 +241,48 @@ def pooksearch():
 					AuthorId = ''
 				else:
 					AuthorId = a.id
+			a = Author.query.all()
 			Publisher = form.Publisher.data
 			P_data = {'Publisher': Publisher}
 			P_data = {key: value for (key, value) in P_data.items() if value}
 			if len(P_data) > 0:
-				p = Publisher.query.filter_by(**P_data).first()  # Here.
+				p = Publisher.query.filter_by(**P_data).first()  # Same Here.
 				if p is None:
 					PublisherId = ''
 				else:
 					PublisherId = p.id
-
-			BookTypeId = form.BookType.data
-			Holiday = form.Holiday.data
-
+			p = Publisher.query.all()
 			Title = form.Title.data
 			PublicationYear = form.PublicationYear.data
 			Fiction = form.Fiction.data
 			filter_data = {'Title': Title, 'AuthorId': AuthorId, 'PublisherId': PublisherId, 'BookTypeId': BookTypeId, \
 			'PublicationYear': PublicationYear, 'Fiction': Fiction}
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
-			bb = Book.query.filter_by(**filter_data).all()
-			tab = BookResults(bb)
+			bb = Book.query.filter_by(**filter_data).filter(Book.BookTypeId.in_(btls)).all() # Lots of filtering.
+			tpd = pd.DataFrame.from_records([i.ro_dic() for i in bb])
+			als = list(tpb.loc[:, 'AuthorId'])
+			pls = list(tpb.loc[:, 'PublisherId'])
+			hls = list(tpb.loc[:, 'Code'])
+			lals = list()
+			lpls = list()
+			lhls = list()
+			for j in als:
+				z = [a[j-1].LastName]
+				lals = lals + z
+			lals.pop()
+			for x in pls:
+				z = [p[x-1].Publisher]
+				lpls = lpls + z
+			lplp.pop()
+			for k in hls:
+				z = [h[k-1].Name]
+				lhls = lhls + z
+			lhls.pop()
+			tpd['AuthorId']=lals
+			tpd['PublisherId']=lpls
+			tpd['Code']=lhls
+			# Add the other values/portions of the dataframe
+			tpd.rename({'AuthorId': 'Author Last Name', 'PublisherId': 'Publisher', 'Code': 'Holiday'})
+			tpd = tpd.drop(columns=['id'])
 			return render_template('results.html', table = tpd.to_html(), tp = 'str')
 	return render_template('booksearch.html', form = form)

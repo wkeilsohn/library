@@ -33,9 +33,6 @@ class Author(db.Model):
 	def __repr__(self):
 		return '<Author: {} {} {}>'.format(self.FirstName, self.MiddleName, self.LastName)
 
-	def to_dic(self):
-		return {'id': self.id, 'FirstName': self.FirstName, 'MiddleName': self.MiddleName, 'LastName': self.LastName}
-
 
 class State(db.Model):
 	__tablename__ = 'State'
@@ -43,7 +40,7 @@ class State(db.Model):
 	State = db.Column(db.String(50), index = True, unique = True)
 	Abbreviation = db.Column(db.String(2), index = True, unique = True)
 
-	Publisher = db.relationship("Publisher") # N/A
+	Publisher = db.relationship("Publisher")
 
 	def __repr__(self):
 		return '<State: {}>'.format(self.State)
@@ -91,6 +88,7 @@ class BookType(db.Model):
 	Folktales = db.Column(db.Boolean, index = True)
 	Game = db.Column(db.Boolean, index = True)
 	Season = db.Column(db.Boolean, index = True)
+	Code = db.Column(db.Integer, db.ForeignKey('Holiday.id'))
 	Paired = db.Column(db.Boolean, index = True)
 	Poetry = db.Column(db.Boolean, index = True)
 	Professional = db.Column(db.Boolean, index = True)
@@ -98,7 +96,6 @@ class BookType(db.Model):
 	SharedRd = db.Column(db.Boolean, index = True)
 	Sports = db.Column(db.Boolean, index = True)
 	Wordless = db.Column(db.Boolean, index = True)
-	Code = db.Column(db.Integer, db.ForeignKey('Holiday.Code'))
 
 	Book = db.relationship("Book", backref="BookType")
 
@@ -122,6 +119,10 @@ class Book(db.Model):
 
 	def __repr__(self):
 		return '<Book: {} by {}>'.format(self.Title, self.AuthorId)
+
+	def to_dic(self):
+		return{'id': self.id, 'LibraryId': self.LibraryId, 'Title': self.Title, 'AuthorId': self.AuthorId, 'SubsequentAuthors': self.SubsequentAuthors, \
+		'PublisherId': self.PublisherId, 'PublicationYear': self.PublicationYear, 'BookTypeId': self.BookTypeId, 'Fiction': self.Fiction}
 		
 
 class Inventory(db.Model):

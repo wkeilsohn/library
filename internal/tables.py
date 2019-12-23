@@ -6,6 +6,8 @@ class AuthorResults(Table):
 	MiddleName = Col('Middle Name')
 	LastName = Col('Last Name')
 
+'''
+
 class PublisherResults(Table):
 	id = Col('id', show = False)
 	Publisher = Col('Publisher')
@@ -24,3 +26,4 @@ class BookResults(Table):
 	PublicationYear = Col('Publication Year')
 	BookTypeId = Col('Book Type', show = False)
 	Fiction = BoolCol('Fiction')
+'''

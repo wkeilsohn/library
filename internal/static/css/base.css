@@ -41,3 +41,8 @@ input[type=text], select, textarea{
 	max-width: 80%;
 	float: center;
 }
+
+table{
+	text-align: center;
+	margin: 0 auto;
+}

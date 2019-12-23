@@ -5,12 +5,28 @@
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
-            {{ form.Material.label }}<br>
-            {{ form.Material }}
+            {{ form.Title.label }}<br>
+            {{ form.Title(size = 60) }}
         </p>
         <p>
-            {{ form.Quantity.label }}<br>
-            {{ form.Quantity(size=4) }}
+            {{ form.FirstAuthor.label }}<br>
+            {{ form.FirstAuthor }}
+        </p>
+        <p>
+            {{ form.Publisher.label }}<br>
+            {{ form.Publisher }}
+        </p>
+        <p>
+            {{ form.PublicationYear.label }}<br>
+            {{ form.PublicationYear(size=4) }}
+        </p>
+        <p>
+            {{ form.BookType.label }}<br>
+            {{ form.BookType(size=4) }}
+        </p>
+        <p>
+            {{ form.Fiction.label }}<br>
+            {{ form.Fiction }}
         </p>
         <p>{{ form.Submit() }}</p>
     </form>

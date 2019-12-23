@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Search Results{% endblock %}
 {% block content %}
-{% for table in tables %}
-            {{titles[loop.index]}}
-            {{ table|safe }}
-{% endfor %}
+<h1>Search Results</h1>
+{% if tp == 'str' %}
+    {{ table|safe }}
+{% else %}
     {{ table }}
+{% endif %}
 {% endblock %}

@@ -175,7 +175,7 @@ def authorsearch():
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
 			au = Author.query.filter_by(**filter_data).all() 
 			tab = AuthorResults(au)
-			return render_template('results.html', table = tab)
+			return render_template('results.html', table = tab, tp = 'tb')
 	return render_template('authorsearch.html', form = form)
 
 @app.route("/PublisherSearch/", methods=['GET', 'POST'])
@@ -195,9 +195,12 @@ def publishersearch():
 			sls = list(tpd.loc[:,'State'])
 			stls = list()
 			for j in sls:
-				stls = stls.append(s[j-1].Abbreviation)
+				z = [stls.append(s[j-1].Abbreviation)]
+				stls = stls + z
+			stls.pop()
 			tpd['State'] = stls
-#			return render_template('results.html', table = # Something Needs to go here.)
+			tpd = tpd.drop(columns=['id'])
+			return render_template('results.html', table = tpd.to_html(), tp = 'str')
 	return render_template('publishersearch.html', form = form)
 
 @app.route("/BookSearch/", methods=['GET', 'POST'])
@@ -235,5 +238,5 @@ def pooksearch():
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
 			bb = Book.query.filter_by(**filter_data).all()
 			tab = BookResults(bb)
-			return render_template('results.html', table = tab)
+			return render_template('results.html', table = tpd.to_html(), tp = 'str')
 	return render_template('booksearch.html', form = form)

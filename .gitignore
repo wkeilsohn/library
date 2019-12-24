@@ -4,3 +4,4 @@ __pycache__/
 include/
 migrations/
 app.db
+Add_Data/

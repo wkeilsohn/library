@@ -41,7 +41,7 @@ def addHolidays():
 			mh = mh + 1
 	print(str(mh) + ' Holidays failed to load.')
 
-def checkUniqueAuthor(a = '', b='', c=''):
+def checkUniqueAuthor(a='', b='', c=''):
 	Au_data = {'FirstName': a, 'MiddleName': b, 'LastName': c}
 	Au_data = {key: value for (key, value) in Au_data.items() if value}
 	au = Author.query.filter_by(**Au_data).all()
@@ -55,9 +55,12 @@ def addAuthor(au):
 	aid = 0
 	aua = ''
 	if isinstance(au, str):
-		name = re.split(', |. |& |.', au)
+		name = re.split(', |\. |& |\.', au)
 		lm = name[0]
-		fm = name[1]
+		if len(name) < 2:
+			fm = '' # Check for companies.
+		else:
+			fm = name[1]
 		if au.find('&') > -1 and len(name) > 4:
 			if len(name[2]) == 1:
 				mm = name[2]

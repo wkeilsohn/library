@@ -106,7 +106,7 @@ class BookType(db.Model):
 class Book(db.Model):
 	__tablename__ = 'Book'
 	id = db.Column(db.Integer, primary_key = True)
-	LibraryId = db.Column(db.String(400), index =True)
+	LibraryId = db.Column(db.String(100), index =True)
 	Title = db.Column(db.String(120), index = True, unique = True)
 	AuthorId = db.Column(db.Integer, db.ForeignKey('Author.id'), index = True)
 	SubsequentAuthors = db.Column(db.String(300))

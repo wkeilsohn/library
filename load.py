@@ -145,6 +145,7 @@ def bookLoader():
 	for df in pd.read_csv(dp, chunksize=ch):
 		for index, row in df.iterrows():
 			bkt = row['Title']
+			bct = int(row[3])
 			if uniqueBookChecker(bkt):
 				af = row[2]
 				aid = addAuthor(af)
@@ -159,9 +160,15 @@ def bookLoader():
 						SubsequentAuthors = aid[2], PublisherId=1, BookTypeId=bts[0], Fiction=fdata)
 					db.session.add(bbk)
 					db.session.commit()
+					iv = Inventory(BookTitle = bkt, Quantity = bct)
+					db.session.add(iv)
+					db.session.commit()
 				except:
 					bnum = bnum + 1
 			else:
+				iv = Inventory.query.filter_by(BookTitle = bkt).first()
+				iv.Quantity = iv.Quantity + bct
+				db.session.commit()
 				dups = dups + 1
 				continue
 	print('A total of ' + str(tynum) + ' book types could not be added; ' \

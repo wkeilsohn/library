@@ -41,6 +41,7 @@ def logout():
 	return render_template('logout.html')
 
 @app.route("/AddBook/", methods=['GET', 'POST'])
+@login_required
 def books():
 	authors = Author.query.all()
 	authors = [(i.id, i.LastName) for i in authors]
@@ -84,6 +85,7 @@ def books():
 	return render_template('books.html', form = form)
 
 @app.route("/AddAuthor/", methods=['GET', 'POST'])
+@login_required
 def author():
 	authors = Author.query.all()
 	au1 = [(i.FirstName) for i in authors]
@@ -110,6 +112,7 @@ def author():
 	return render_template('author.html', form = form)
 
 @app.route("/AddItem/", methods=['GET', 'POST'])
+@login_required
 def item():
 	books = Book.query.all()
 	books = [(i.id, i.Title) for i in books]
@@ -134,6 +137,7 @@ def item():
 	return render_template('item.html', form = form)
 
 @app.route("/AddPublisher/", methods=['GET', 'POST'])
+@login_required
 def publisher():
 	states = State.query.all()
 	states = [(i.id, i.State) for i in states]
@@ -160,10 +164,12 @@ def publisher():
 
 
 @app.route("/Results/", methods=['GET', 'POST'])
+@login_required
 def results(table):
 	return render_template('results.html', table = table)
 
 @app.route("/AuthorSearch/", methods=['GET', 'POST'])
+@login_required
 def authorsearch():
 	form = AuthorLookupForm()
 	if request.method == 'POST':
@@ -179,6 +185,7 @@ def authorsearch():
 	return render_template('authorsearch.html', form = form)
 
 @app.route("/PublisherSearch/", methods=['GET', 'POST'])
+@login_required
 def publishersearch():
 	form = PublisherLookupForm()
 	if request.method == 'POST':
@@ -204,6 +211,7 @@ def publishersearch():
 	return render_template('publishersearch.html', form = form)
 
 @app.route("/BookSearch/", methods=['GET', 'POST'])
+@login_required
 def booksearch():
 	holidays = Holiday.query.all()
 	holidays = [(i.id, i.Name) for i in holidays]
@@ -227,7 +235,7 @@ def booksearch():
 			'Mystery': form.BookType.Mystery.data, 'Folktales': form.BookType.Folktales, 'Game': form.BookType.Game.data, 'Season': form.BookType.Season.data, \
 			'Code': Code, 'Paired': form.BookType.Paired.data, 'Poetry': form.BookType.Poetry.data, 'Professional': form.BookType.Professional.data, \
 			'Science': form.BookType.Science.data, 'SharedRd': form.BookType.SharedRd.data, 'Sports': form.BookType.Sports.data, 'Wordless': form.BookType.Wordless.data}
-			bt_data = {key: '' for (key, value) in bt_data.items() if value == False}
+			bt_data = {key: '' for (key, value) in bt_data.items() if value == False} # This actually cuts out the results?
 			print(bt_data)
 			bt_data = {key: value for (key, value) in bt_data.items() if value}
 			btb = BookType.query.filter_by(**bt_data).all()

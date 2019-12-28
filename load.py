@@ -11,7 +11,7 @@ ch = 50 # Chunk size subject to change.
 
 cates = ['With_Plans', 'ABC_Count', 'Award', 'Begining_Reading', 'BegRd_ChapterBk', 'Biography', 'Mystery',\
 'Fables_Folktales', 'Game', 'Paired', 'Poetry_Ridd_Codes', 'Professional', 'Science', \
-'Shared_Rd', 'Sports', 'Wordless', 'Holiday_Seasons']
+'Shared_Rd', 'Sports', 'Wordless', 'Holidays_Seasons']
 
 
 def addState():
@@ -106,10 +106,8 @@ def addType(df):
 		z = [bool(df.iloc[j])]
 		rl = rl + z
 	h = df[16]
-	holref = Holiday.query.filter_by(Code=h).first()
+	holref = Holiday.query.filter_by(Code=h).first() # This means ONLY one option.
 	if holref is None:
-		h1 = '00' # Edge case...-_-
-	elif len(holref)<1:
 		h1 = '00'
 	else:
 		h1 = holref.Code
@@ -189,6 +187,7 @@ def filldb():
 		print('Book Types Failed to Load')
 	try:
 		addPublisher()
+		print('Default Publisher Added')
 		bookLoader()
 	except:
 		print('Books Failed to Load')

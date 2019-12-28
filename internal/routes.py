@@ -235,11 +235,14 @@ def booksearch():
 			'Mystery': form.BookType.Mystery.data, 'Folktales': form.BookType.Folktales, 'Game': form.BookType.Game.data, 'Season': form.BookType.Season.data, \
 			'Code': Code, 'Paired': form.BookType.Paired.data, 'Poetry': form.BookType.Poetry.data, 'Professional': form.BookType.Professional.data, \
 			'Science': form.BookType.Science.data, 'SharedRd': form.BookType.SharedRd.data, 'Sports': form.BookType.Sports.data, 'Wordless': form.BookType.Wordless.data}
-			bt_data = {key: '' for (key, value) in bt_data.items() if value == False} # This actually cuts out the results?
-			print(bt_data)
+			bt_data1 = {key: '' for (key, value) in bt_data.items() if value == False}
+			bt_data2 = {key: value for (key, value) in bt_data.items() if value == True}
+			bt_data = {**bt_data1, **bt_data2}
 			bt_data = {key: value for (key, value) in bt_data.items() if value}
+			print(bt_data)
 			btb = BookType.query.filter_by(**bt_data).all()
 			btls = [i.id for i in btb]
+			print(btls)
 			### Then Search for the rest of the book ###
 			AuthorId = form.FirstAuthor.data
 			A_data = {'LastName': AuthorId}
@@ -271,9 +274,9 @@ def booksearch():
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
 			bb = Book.query.filter_by(**filter_data).filter(Book.BookTypeId.in_(btls)).all() # Lots of filtering.
 			tpd = pd.DataFrame.from_records([i.to_dic() for i in bb])
+			print(bb) # The line above is producing an empty dataframe... becuase everything is being filtered out.
 			als = list(tpd.loc[:, 'AuthorId'])
 			pls = list(tpd.loc[:, 'PublisherId'])
-#			hls = list(tpd.loc[:, 'Code'])
 			lals = list()
 			lpls = list()
 			lhls = list()
@@ -283,11 +286,6 @@ def booksearch():
 			for x in pls:
 				z = [p[x-1].Publisher]
 				lpls = lpls + z
-			'''
-			for k in hls:
-				z = [h[k-1].Name]
-				lhls = lhls + z
-			'''
 			tpd['AuthorId']=lals
 			tpd['PublisherId']=lpls
 #			tpd['Code']=lhls

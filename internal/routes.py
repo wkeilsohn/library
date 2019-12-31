@@ -204,7 +204,6 @@ def publishersearch():
 			for j in sls:
 				z = [s[j-1].Abbreviation]
 				stls = stls + z
-#			stls.pop() # So... apparently this breaks it here.
 			tpd['State'] = stls
 			tpd = tpd.drop(columns=['id'])
 			return render_template('results.html', table = tpd.to_html(), tp = 'str')
@@ -220,24 +219,17 @@ def booksearch():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			### Search for Book Type First. ###
-			Code = form.BookType.Holiday.data
-			H_data = {'id': Code}
-			H_data = {key: value for (key, value) in H_data.items() if value}
-			if len(H_data) > 0:
-				h = Holiday.query.filter_by(**H_data).first()
-				if h is None:
-					Code = ''
-				else:
-					Code = h.id
-			h = Holiday.query.all()
+			Code = form.BookType.Holiday.data - 1
+			print(Code)
 			bt_data = {'Plan': form.BookType.Plan.data, 'ABC': form.BookType.ABC.data, 'Award': form.BookType.Award.data, \
 			'BegRead': form.BookType.BegRead.data, 'Chapter': form.BookType.Chapter.data, 'Biography': form.BookType.Biography.data, \
 			'Mystery': form.BookType.Mystery.data, 'Folktales': form.BookType.Folktales, 'Game': form.BookType.Game.data, 'Season': form.BookType.Season.data, \
 			'Code': Code, 'Paired': form.BookType.Paired.data, 'Poetry': form.BookType.Poetry.data, 'Professional': form.BookType.Professional.data, \
 			'Science': form.BookType.Science.data, 'SharedRd': form.BookType.SharedRd.data, 'Sports': form.BookType.Sports.data, 'Wordless': form.BookType.Wordless.data}
-			bt_data1 = {key: '' for (key, value) in bt_data.items() if value == False}
-			bt_data2 = {key: value for (key, value) in bt_data.items() if value == True}
-			bt_data = {**bt_data1, **bt_data2}
+			bt1 = {key: '' for (key, value) in bt_data.items() if value == False}
+			bt2 = {key: value for (key, value) in bt_data.items() if value == True}
+			bt3 = {key: value for (key, value) in bt_data.items() if isinstance(value, int)}
+			bt_data = {**bt1, **bt2, **bt3}
 			bt_data = {key: value for (key, value) in bt_data.items() if value}
 			print(bt_data)
 			btb = BookType.query.filter_by(**bt_data).all()
@@ -272,9 +264,11 @@ def booksearch():
 			filter_data = {'Title': Title, 'FirstAuthor': AuthorId, 'PublisherId': PublisherId, \
 			'PublicationYear': PublicationYear, 'Fiction': Fiction}
 			filter_data = {key: value for (key, value) in filter_data.items() if value}
+			if len(btls)<=0:
+				flash('No results matching that category')
+				return render_template('booksearch.html', form = form)
 			bb = Book.query.filter_by(**filter_data).filter(Book.BookTypeId.in_(btls)).all() # Lots of filtering.
 			tpd = pd.DataFrame.from_records([i.to_dic() for i in bb])
-			print(bb) # The line above is producing an empty dataframe... becuase everything is being filtered out.
 			als = list(tpd.loc[:, 'AuthorId'])
 			pls = list(tpd.loc[:, 'PublisherId'])
 			lals = list()
@@ -288,8 +282,6 @@ def booksearch():
 				lpls = lpls + z
 			tpd['AuthorId']=lals
 			tpd['PublisherId']=lpls
-#			tpd['Code']=lhls
-			# Add the other values/portions of the dataframe
 			tpd.rename({'AuthorId': 'Author Last Name', 'PublisherId': 'Publisher'})
 			tpd = tpd.drop(columns=['id'])
 			return render_template('results.html', table = tpd.to_html(), tp = 'str')

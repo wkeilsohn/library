@@ -107,10 +107,11 @@ def addType(df):
 		rl = rl + z
 	h = df[16]
 	holref = Holiday.query.filter_by(Code=h).first() # This means ONLY one option.
+#	print(holref)
 	if holref is None:
 		h1 = '00'
 	else:
-		h1 = holref.Code
+		h1 = holref.id
 	if h1 == '00':
 		h2 = False
 	else:

@@ -219,7 +219,7 @@ def booksearch():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			### Search for Book Type First. ###
-			Code = form.BookType.Holiday.data - 1
+			Code = form.BookType.Holiday.data
 			print(Code)
 			bt_data = {'Plan': form.BookType.Plan.data, 'ABC': form.BookType.ABC.data, 'Award': form.BookType.Award.data, \
 			'BegRead': form.BookType.BegRead.data, 'Chapter': form.BookType.Chapter.data, 'Biography': form.BookType.Biography.data, \

@@ -3,12 +3,23 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from internal import login
 
+class Status(db.Model):
+	__tablename__ = 'Status'
+	id = db.Column(db.Integer, primary_key=True)
+	Name = db.Column(db.String(10), index=True, unique = True)
+
+	User = db.relationship("User")
+
+	def __repr__(self):
+		return '<Type: {}>'.format(self.Name)
+
 
 class User(UserMixin, db.Model):
 	__tablename__ = 'User'
 	id = db.Column(db.Integer, primary_key=True)
 	Username = db.Column(db.String(64), index=True, unique=True)
 	email = db.Column(db.String(120), index=True, unique=True)
+	usertype = db.Column(db.Integer, db.ForeignKey('Status.id'))
 	password_hash = db.Column(db.String(128))
 
 	def __repr__(self):
@@ -19,6 +30,7 @@ class User(UserMixin, db.Model):
 
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
+
 
 
 class Author(db.Model):

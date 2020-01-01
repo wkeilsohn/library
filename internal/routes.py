@@ -6,12 +6,13 @@ from internal.models import *
 from internal.tables import *
 from werkzeug.urls import url_parse
 import pandas as pd
+from internal.admin import *
 
 @app.route("/") # Good...Just add Search/Navigation Features.
 @app.route("/home/")
 @login_required
 def home():
-    return render_template('home.html')
+	return render_template('home.html')
 
 @app.route("/about/") # Good!... Just fill out the page.
 def about():
@@ -43,6 +44,8 @@ def logout():
 @app.route("/AddBook/", methods=['GET', 'POST'])
 @login_required
 def books():
+	if checkPrivledge():
+		return redirect('/home/')
 	authors = Author.query.all()
 	authors = [(i.id, i.LastName) for i in authors]
 	publishers = Publisher.query.all()
@@ -87,6 +90,8 @@ def books():
 @app.route("/AddAuthor/", methods=['GET', 'POST'])
 @login_required
 def author():
+	if checkPrivledge():
+		return redirect('/home/')
 	authors = Author.query.all()
 	au1 = [(i.FirstName) for i in authors]
 	au2 = [(i.LastName) for i in authors]
@@ -114,6 +119,8 @@ def author():
 @app.route("/AddItem/", methods=['GET', 'POST'])
 @login_required
 def item():
+	if checkPrivledge():
+		return redirect('/home/')
 	books = Book.query.all()
 	books = [(i.id, i.Title) for i in books]
 	mater = Book.query.all()
@@ -139,6 +146,8 @@ def item():
 @app.route("/AddPublisher/", methods=['GET', 'POST'])
 @login_required
 def publisher():
+	if checkPrivledge():
+		return redirect('/home/')
 	states = State.query.all()
 	states = [(i.id, i.State) for i in states]
 	pubs = Publisher.query.all()

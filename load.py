@@ -5,13 +5,26 @@ import re
 
 path = '~/Documents/Python_Scripts/oasis_library/virtual/Add_Data/'
 
-files = {'st': 'state.csv', 'hc': 'CVS_codes.csv', 'bk': 'Library_Master.csv'}
+files = {'st': 'state.csv', 'hc': 'CVS_codes.csv', 'bk': 'Library_Master.csv', 'stu':'status.csv'}
 
 ch = 50 # Chunk size subject to change.
 
 cates = ['With_Plans', 'ABC_Count', 'Award', 'Begining_Reading', 'BegRd_ChapterBk', 'Biography', 'Mystery',\
 'Fables_Folktales', 'Game', 'Paired', 'Poetry_Ridd_Codes', 'Professional', 'Science', \
 'Shared_Rd', 'Sports', 'Wordless', 'Holidays_Seasons']
+
+def addStatus():
+	st = path + files['stu']
+	df = pd.read_csv(st)
+	ms = 0
+	for index, row in df.iterrows():
+		try:
+			st = Status(Name=row[0])
+			db.session.add(st)
+			db.session.commit()
+		except:
+			ms = ms + 1
+	print(str(ms) + ' User statuses could not be added.')
 
 
 def addState():
@@ -179,6 +192,7 @@ def bookLoader():
 
 def filldb():
 	try:
+		addStatus()
 		addState()
 	except:
 		print('States Failed to Load')

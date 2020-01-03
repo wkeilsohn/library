@@ -1,7 +1,7 @@
 from flask_login import current_user
 
 class Admin:
-	
+
 	def checkPrivledge():
 		cut = current_user.usertype
 		if cut < 3:
@@ -17,5 +17,5 @@ class Admin:
 			return False
 
 	def checkAccess():
-		if checkPrivledge():
+		if Admin.checkPrivledge():
 			return redirect('/home/')

@@ -1,15 +1,15 @@
 from flask_login import current_user
 from internal.messages.reply import *
+from internal.models import User 
+from internal import db
 
 class Admin:
 
 	def checkAccess():
-		if current_user.usertype >= 3:
-			return redirect('/home/')
+		return current_user.usertype >= 3
 
 	def checkAuthority():
-		if current_user.usertype == 1:
-			return redirect('/home/')
+		return current_user.usertype > 1
 
 class MSG:
 
@@ -18,6 +18,14 @@ class MSG:
 		final_String = hd + str2
 		return final_String
 
-
 	def autoReply():
 		return reply
+
+
+class RSG:
+
+	def userCreator(num, str1, str2, str3):
+		user = User(Username = str1, email = str2, usertype = num)
+		user.set_password(str3)
+		db.session.add(user)
+		db.session.commit()

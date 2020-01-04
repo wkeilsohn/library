@@ -58,7 +58,8 @@ def logout():
 @app.route("/AddBook/", methods=['GET', 'POST'])
 @login_required
 def books():
-	Admin.checkAccess()
+	if Admin.checkAccess():
+		return redirect('/home/')
 	authors = Author.query.all()
 	authors = [(i.id, i.LastName) for i in authors]
 	publishers = Publisher.query.all()
@@ -103,7 +104,8 @@ def books():
 @app.route("/AddAuthor/", methods=['GET', 'POST'])
 @login_required
 def author():
-	Admin.checkAccess()
+	if Admin.checkAccess():
+		return redirect('/home/')
 	authors = Author.query.all()
 	au1 = [(i.FirstName) for i in authors]
 	au2 = [(i.LastName) for i in authors]
@@ -131,7 +133,8 @@ def author():
 @app.route("/AddItem/", methods=['GET', 'POST'])
 @login_required
 def item():
-	Admin.checkAccess()
+	if Admin.checkAccess():
+		return redirect('/home/')
 	books = Book.query.all()
 	books = [(i.id, i.Title) for i in books]
 	mater = Book.query.all()
@@ -157,7 +160,8 @@ def item():
 @app.route("/AddPublisher/", methods=['GET', 'POST'])
 @login_required
 def publisher():
-	Admin.checkAccess()
+	if Admin.checkAccess():
+		return redirect('/home/')
 	states = State.query.all()
 	states = [(i.id, i.State) for i in states]
 	pubs = Publisher.query.all()
@@ -308,12 +312,29 @@ def booksearch():
 
 @app.route("/VisitorRegistration/", methods=['GET', 'POST'])
 def visreg():
+	if current_user.is_authenticated:
+		return redirect('/home/')
 	form = RegistrationForm()
+	if form.validate_on_submit():
+		try:
+			RSG.userCreator(3, form.Username.data, form.Email.data, form.Password1.data)
+			return redirect('/login/')
+		except:
+			flash('Registration Failed')
+			flash('Please Try Again or Contact Development')
 	return render_template('register.html', form = form)
 
 @app.route("/LibrarianRegistration/", methods=['GET', 'POST'])
 @login_required
 def libreg():
-	Admin.checkAuthority()
+	if Admin.checkAuthority():
+		return redirect('/home/')
 	form = RegistrationForm()
+	if form.validate_on_submit():
+		try:
+			RSG.userCreator(2, form.Username.data, form.Email.data, form.Password1.data)
+			return redirect('/login/')
+		except:
+			flash('Registration Failed')
+			flash('Please Try Again or Contact Development')
 	return render_template('register.html', form = form)

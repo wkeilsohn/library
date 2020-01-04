@@ -46,3 +46,13 @@ table{
 	text-align: center;
 	margin: 0 auto;
 }
+
+.flashed_messages{
+	width: 60%;
+	max-width: 60%
+	justify-content: center;
+	text-align: center;
+	margin-right: auto;
+	margin-left: auto;
+	float: center;
+}

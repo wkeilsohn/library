@@ -8,6 +8,7 @@ app.run(debug=True)
 @app.shell_context_processor
 def make_shell_context():
 	return {'db': db,
+			'Status': Status,
 			'User': User,
 			'Author': Author,
 			'State': State,

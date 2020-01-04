@@ -305,3 +305,15 @@ def booksearch():
 			tpd = tpd.drop(columns=['id'])
 			return render_template('results.html', table = tpd.to_html(), tp = 'str')
 	return render_template('booksearch.html', form = form)
+
+@app.route("/VisitorRegistration/", methods=['GET', 'POST'])
+def visreg():
+	form = RegistrationForm()
+	return render_template('register.html', form = form)
+
+@app.route("/LibrarianRegistration/", methods=['GET', 'POST'])
+@login_required
+def libreg():
+	Admin.checkAuthority()
+	form = RegistrationForm()
+	return render_template('register.html', form = form)

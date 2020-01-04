@@ -3,22 +3,12 @@ from internal.messages.reply import *
 
 class Admin:
 
-	def checkPrivledge():
-		cut = current_user.usertype
-		if cut < 3:
-			return False # Not intuative, but easier to integrate.
-		else:
-			return True
-
-	def checkAdmin():
-		cut = current_user.usertype
-		if cut == 1:
-			return True
-		else:
-			return False
-
 	def checkAccess():
-		if Admin.checkPrivledge():
+		if current_user.usertype >= 3:
+			return redirect('/home/')
+
+	def checkAuthority():
+		if current_user.usertype == 1:
 			return redirect('/home/')
 
 class MSG:

@@ -7,12 +7,10 @@
         <p>
             {{ form.Username.label }}<br>
             {{ form.Username(size=32) }}
-            <span style="color: red;">[{{ error }}]</span>
         </p>
         <p>
             {{ form.password.label }}<br>
             {{ form.password(size=32) }}
-            <span style="color: red;">[{{ error }}]</span>
         </p>
         <p>{{ form.Submit() }}</p>
     </form>

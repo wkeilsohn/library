@@ -90,3 +90,10 @@ class ContactForm(FlaskForm):
 	Subject = StringField('Subject',  validators=[DataRequired()])
 	Message = TextAreaField('Message',  validators=[DataRequired()])
 	Submit = SubmitField('Send')
+
+class RegistrationForm(FlaskForm):
+	Username = StringField('Username', validators=[DataRequired()])
+	Email = StringField('Email',  validators=[DataRequired(), Email()])
+	Password1 = StringField('Password', validators=[DataRequired()])
+	Password2 = StringField('Re-Enter Password', validators=[DataRequired()])
+	Submit = SubmitField('Submit')

@@ -49,8 +49,8 @@
             Register
           </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Visitor</a>
-              <a class="dropdown-item" href="#">Librarian</a>
+              <a class="dropdown-item" href="{{url_for('visreg')}}">Visitor</a>
+              <a class="dropdown-item" href="{{url_for('libreg')}}">Librarian</a>
             </div>
         </li>
       </ul>
@@ -64,19 +64,19 @@
    			  </ul>
  		</div>
 	</nav>
-	<div>
-		{% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-	</div>
 	<div id="boarder">
 		<div class="container", id="main">
+        <div class='flashed-messages'>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-primary" role="alert">
+                  {{ message }}
+                </div>
+                {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
 			{% block content %}
 			{% endblock %}
 		</div>

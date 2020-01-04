@@ -2,6 +2,36 @@
 <h1>{% block title %}About{% endblock %}</h1>
 <div class="about">
 	{% block content %}
-		<p>Welcome to the about page. More information will be coming soon. In the mean time, why doen't you check out some of the other cool features of the site?</p>
+	<h1>Hello!</h1>
+	<p>Welcome to the Oasis Volunteer Library's book catalog. Here you can look up books, authors, publishers, etc. to your hearts content and browse our full collection, all via one convenient web application.
+	</p>
+	<p>If you are new to the system, we recommend creating an account via the <a href="#">registration page</a>.
+	</p>
+	<h2>Contact Us:</h2>
+	<p>If you have a question about the library’s services, the selection of books present, or any other information pertaining to the library itself, we encourage you to email <a href="mailto:keilsohn1@ix.netcom.com?subject=Oasis Library Inquiry">Mrs. Marlene Keilsohn</a>
+	(or use the handy-dandy contact form below)
+	</p>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.Name.label }}<br>
+            {{ form.Name(size=20) }}
+        </p>
+        <p>
+            {{ form.Email.label }}<br>
+            {{ form.Email(size=50) }}
+        </p>
+        <p>
+            {{ form.Subject.label }}<br>
+            {{ form.Subject(size=20) }}
+        </p>
+        <p>
+            {{ form.Message.label }}<br>
+            {{ form.Message(size=5000) }}
+        </p>
+        <p>{{ form.Submit() }}</p>
+    </form>
+	<p>If you have any questions/comments about the website, or would like to report a bug, please reach out directly to the <a href="mailto:librarywebdev@gmail.com?subject=Library Website Bug">developer</a>.
+	</p> 
 	{% endblock %}
 </div>

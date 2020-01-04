@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request
-from internal import app, db, engine
+from internal import app, db, engine, mail
 from internal.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
 from internal.models import *
@@ -8,6 +8,7 @@ from werkzeug.urls import url_parse
 import pandas as pd
 from internal.helpers import *
 from flask_mail import Message, Mail
+from config import ADMINS
 
 @app.route("/") # Good...Just add Search/Navigation Features.
 @app.route("/home/")
@@ -15,9 +16,21 @@ from flask_mail import Message, Mail
 def home():
 	return render_template('home.html')
 
-@app.route("/about/") # Good!... Just fill out the page.
+@app.route("/about/", methods=['GET', 'POST'])
 def about():
-	return render_template('about.html')
+	form = ContactForm()
+	if form.validate_on_submit():
+		msg1 = Message(form.Subject.data, recipients = ADMINS)
+		msg1.body = MSG.body(form.Email.data, form.Message.data)
+		msg2 = Message('Library Inquery', recipients = [form.Email.data])
+		msg2.body = MSG.autoReply()
+		try:
+			mail.send(msg1)
+			mail.send(msg2)
+			flash('Email Sent')
+		except:
+			flash('Email Failed to Send')
+	return render_template('about.html', form = form)
 
 @app.route("/login/", methods=['GET', 'POST'])
 def login():

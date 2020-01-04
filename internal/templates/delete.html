@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Delete Item{% endblock %}
+{% block content %}
+    <h1>Remove Book</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.Title.label }}<br>
+            {{ form.Title }}
+        </p>
+        <p>
+            {{ form.Option.label }}<br>
+            {{ form.Option }}
+        </p>
+        <p>{{ form.Submit() }}</p>
+    </form>
+{% endblock %}

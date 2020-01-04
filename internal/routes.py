@@ -338,3 +338,36 @@ def libreg():
 			flash('Registration Failed')
 			flash('Please Try Again or Contact Development')
 	return render_template('register.html', form = form)
+
+@app.route("/DeleteBook/", methods=['GET', 'POST'])
+@login_required
+def delbook():
+	if Admin.checkAccess():
+		return redirect('/home/')
+	books = Book.query.all()
+	books = [(i.id, i.Title) for i in books]
+	options = [(0, 'One'), (1, 'All')]
+	form = DeleteForm()
+	form.Title.choices = books
+	form.Option.choices = options
+	if form.validate_on_submit():
+		print(form.Option.data)
+		if form.Option.data == 0:
+			book = Book.query.filter_by(id = form.Title.data).first()
+			bktp = BookType.query.filter_by(id = book.BookTypeId).first()
+			db.session.delete(book)
+			db.session.delete(bktp)
+		elif form.Option.data == 1:
+			Ib = Inventory.query.filter_by(BookTitle = form.Title.data).first()
+			Ib.Quantity = Ib.Quantity - 1
+		try:
+			db.session.commit()
+			flash('The Book(s) have been removed.')
+		except:
+			flash('Book(s) could not be removed.')
+	return render_template('delete.html', form = form)
+
+@app.route("/DeleteUser/", methods=['GET', 'POST'])
+@login_required
+def deluser():
+	return redirect('deluser.html', form = form)

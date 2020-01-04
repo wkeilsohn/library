@@ -109,3 +109,8 @@ class RegistrationForm(FlaskForm):
 		user = User.query.filter_by(email=Email.data).first()
 		if user is not None:
 			raise ValidationError('That email address has already been used.')
+
+class DeleteForm(FlaskForm):
+	Title = SelectField('Book Title', coerce = int)
+	Option = SelectField('Remove', coerce = int) 
+	Submit = SubmitField('Delete')

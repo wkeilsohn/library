@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, send_file
+from flask import render_template, flash, redirect, url_for, request, Response
 from internal import app, db, engine, mail
 from internal.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
@@ -9,6 +9,7 @@ import pandas as pd
 from internal.helpers import *
 from flask_mail import Message, Mail
 from config import ADMINS
+import io
 
 @app.route("/") # Good...Just add Search/Navigation Features.
 @app.route("/home/")
@@ -242,8 +243,7 @@ def booksearch():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			### Search for Book Type First. ###
-			Code = form.BookType.Holiday.data
-			print(Code)
+			Code = Looker.Coder(form.BookType.Holiday.data)
 			bt_data = {'Plan': form.BookType.Plan.data, 'ABC': form.BookType.ABC.data, 'Award': form.BookType.Award.data, \
 			'BegRead': form.BookType.BegRead.data, 'Chapter': form.BookType.Chapter.data, 'Biography': form.BookType.Biography.data, \
 			'Mystery': form.BookType.Mystery.data, 'Folktales': form.BookType.Folktales, 'Game': form.BookType.Game.data, 'Season': form.BookType.Season.data, \
@@ -254,10 +254,8 @@ def booksearch():
 			bt3 = {key: value for (key, value) in bt_data.items() if isinstance(value, int)}
 			bt_data = {**bt1, **bt2, **bt3}
 			bt_data = {key: value for (key, value) in bt_data.items() if value}
-			print(bt_data)
 			btb = BookType.query.filter_by(**bt_data).all()
 			btls = [i.id for i in btb]
-			print(btls)
 			### Then Search for the rest of the book ###
 			AuthorId = form.FirstAuthor.data
 			A_data = {'LastName': AuthorId}
@@ -292,6 +290,9 @@ def booksearch():
 				return render_template('booksearch.html', form = form)
 			bb = Book.query.filter_by(**filter_data).filter(Book.BookTypeId.in_(btls)).all() # Lots of filtering.
 			tpd = File.modelToPd(bb)
+			if tpd.empty:
+				flash('No results matching that category')
+				return render_template('booksearch.html', form = form)
 			als = list(tpd.loc[:, 'AuthorId'])
 			pls = list(tpd.loc[:, 'PublisherId'])
 			lals = list()
@@ -396,17 +397,25 @@ def downfile():
 	bks = Book.query.all()
 	inv = Inventory.query.all()
 	bkt = BookType.query.all()
+	aut = Author.query.all()
+	pub = Publisher.query.all()
 	bks = File.modelToPd(bks)
 	inv = File.modelToPd(inv)
 	bkt = File.modelToPd(bkt)
+	aut = File.modelToPd(aut)
+	pub = File.modelToPd(pub)
 	h = Holiday.query.all()
 	h = dict([(i.id, i.Name) for i in h])
 	bkt = bkt.replace({'Code': h})
 	bks = bks.merge(bkt, left_on='BookTypeId', right_on='id')
 	bks = bks.merge(inv, left_on='Title', right_on='BookTitle')
-	bks = bks.drop(columns=['BookTypeId'])
-	bks = bks.to_csv(index=True)
+	bks = bks.merge(aut, left_on='AuthorId', right_on='id')
+	bks = bks.merge(pub, left_on='PublisherId', right_on='id')
+	bks = bks.drop(columns=['BookTypeId', 'AuthorId', 'BookTitle', 'PublisherId'])
 	try:
-		return send_file(bks)
+		Book_File = io.StringIO()
+		bks.to_csv(Book_File)
+		return Response(Book_File.getvalue(), mimetype='text/csv')
 	except:
 		flash('File could not be downloaded.')
+		return redirect('/home/')

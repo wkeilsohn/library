@@ -35,3 +35,9 @@ class File:
 
 	def modelToPd(md):
 		return pd.DataFrame.from_records([i.to_dic() for i in md])
+
+class Looker:
+
+	def Coder(num):
+		if num == 1:
+			return 0

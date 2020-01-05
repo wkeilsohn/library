@@ -45,6 +45,9 @@ class Author(db.Model):
 	def __repr__(self):
 		return '<Author: {} {} {}>'.format(self.FirstName, self.MiddleName, self.LastName)
 
+	def to_dic(self):
+		return{'id': self.id, 'First_Name': self.FirstName, 'Middle_Name': self.MiddleName, 'Last_Name': self.LastName}
+
 
 class State(db.Model):
 	__tablename__ = 'State'
@@ -114,6 +117,13 @@ class BookType(db.Model):
 	def __repr__(self):
 		return '<Row Number: {}>'.format(self.id)
 
+	def to_dic(self):
+		return{'id': self.id, "Plan": self.Plan, "ABC": self.ABC, "Award": self.Award, "BegRead": self.BegRead, \
+		"Chapter": self.Chapter, "Biography": self.Biography, "Mystery": self.Mystery, "Folktales": self.Folktales, \
+		"Game": self.Game, "Season": self.Season, "Code":self.Code, "Paired":self.Paired, "Poetry":self.Poetry, \
+		"Professional": self.Professional, "Science": self.Science, "SharedRd": self.SharedRd, "Sports": self.Sports, \
+		"Wordless": self.Wordless}
+
 
 class Book(db.Model):
 	__tablename__ = 'Book'
@@ -145,6 +155,9 @@ class Inventory(db.Model):
 
 	def __repr__(self):
 		return '<Inventory: {} copies of {}>'.format(self.Quantity, self.BookTitle)
+
+	def to_dic(self):
+		return{'id': self.id, 'BookTitle': self.BookTitle, 'Quantity': self.Quantity}
 
 @login.user_loader
 def load_user(id):

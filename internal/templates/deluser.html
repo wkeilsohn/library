@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Delete Account{% endblock %}
+{% block content %}
+    <h1>Delete Account</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.Username.label }}<br>
+            {{ form.Username(size=64) }}
+        </p>
+        <p>
+            {{ form.Password.label }}<br>
+            {{ form.Password(size=60) }}
+        </p>
+        <p>{{ form.Submit() }}</p>
+    </form>
+{% endblock %}

@@ -114,3 +114,8 @@ class DeleteForm(FlaskForm):
 	Title = SelectField('Book Title', coerce = int)
 	Option = SelectField('Remove', coerce = int) 
 	Submit = SubmitField('Delete')
+
+class DeleteUserForm(FlaskForm):
+	Username = StringField('Username', validators=[DataRequired()])
+	Password = StringField('Password', validators=[DataRequired()])
+	Submit = SubmitField('Confirm')

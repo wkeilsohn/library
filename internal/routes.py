@@ -370,7 +370,7 @@ def delbook():
 @app.route("/DeleteUser/", methods=['GET', 'POST'])
 @login_required
 def deluser():
-	form = DeleteUserForm():
+	form = DeleteUserForm()
 	if form.validate_on_submit():
 		user = User.query.filter_by(Username = form.Username.data).first()
 		if user.id == current_user.id:
@@ -386,4 +386,5 @@ def deluser():
 				flash('Incorrect Password')
 		else:
 			flash('You can only delete your own account.')
-	return redirect('deluser.html', form = form)
+	return render_template('deluser.html', form = form)
+

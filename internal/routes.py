@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, send_file
 from internal import app, db, engine, mail
 from internal.forms import *
 from flask_login import current_user, login_user, logout_user, login_required
@@ -291,7 +291,7 @@ def booksearch():
 				flash('No results matching that category')
 				return render_template('booksearch.html', form = form)
 			bb = Book.query.filter_by(**filter_data).filter(Book.BookTypeId.in_(btls)).all() # Lots of filtering.
-			tpd = pd.DataFrame.from_records([i.to_dic() for i in bb])
+			tpd = File.modelToPd(bb)
 			als = list(tpd.loc[:, 'AuthorId'])
 			pls = list(tpd.loc[:, 'PublisherId'])
 			lals = list()
@@ -388,3 +388,25 @@ def deluser():
 			flash('You can only delete your own account.')
 	return render_template('deluser.html', form = form)
 
+@app.route("/download/", methods=['GET', 'POST'])
+@login_required
+def downfile():
+	if Admin.checkAuthority():
+		return redirect('/home/')
+	bks = Book.query.all()
+	inv = Inventory.query.all()
+	bkt = BookType.query.all()
+	bks = File.modelToPd(bks)
+	inv = File.modelToPd(inv)
+	bkt = File.modelToPd(bkt)
+	h = Holiday.query.all()
+	h = dict([(i.id, i.Name) for i in h])
+	bkt = bkt.replace({'Code': h})
+	bks = bks.merge(bkt, left_on='BookTypeId', right_on='id')
+	bks = bks.merge(inv, left_on='Title', right_on='BookTitle')
+	bks = bks.drop(columns=['BookTypeId'])
+	bks = bks.to_csv(index=True)
+	try:
+		return send_file(bks)
+	except:
+		flash('File could not be downloaded.')

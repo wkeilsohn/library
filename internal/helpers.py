@@ -1,7 +1,8 @@
 from flask_login import current_user
 from internal.messages.reply import *
-from internal.models import User 
+from internal.models import User
 from internal import db
+import pandas as pd
 
 class Admin:
 
@@ -29,3 +30,8 @@ class RSG:
 		user.set_password(str3)
 		db.session.add(user)
 		db.session.commit()
+
+class File:
+
+	def modelToPd(md):
+		return pd.DataFrame.from_records([i.to_dic() for i in md])

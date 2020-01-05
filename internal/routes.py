@@ -295,19 +295,25 @@ def booksearch():
 				return render_template('booksearch.html', form = form)
 			als = list(tpd.loc[:, 'AuthorId'])
 			pls = list(tpd.loc[:, 'PublisherId'])
+			tls = list(tpd.loc[:, 'Title'])
 			lals = list()
 			lpls = list()
-			lhls = list()
+			ltls = list()
 			for j in als:
 				z = [a[j-1].LastName]
 				lals = lals + z
 			for x in pls:
 				z = [p[x-1].Publisher]
 				lpls = lpls + z
+			for w in tls:
+				inv = Inventory.query.filter_by(BookTitle=w).first()
+				z = [inv.Quantity]
+				ltls = ltls + z
 			tpd['AuthorId']=lals
 			tpd['PublisherId']=lpls
-			tpd.rename({'AuthorId': 'Author Last Name', 'PublisherId': 'Publisher'})
-			tpd = tpd.drop(columns=['id'])
+			tpd = tpd.drop(columns=['id', 'SubsequentAuthors', 'PublisherId', 'BookTypeId'])
+			tpd.columns = ['Library ID','Title', 'First Author', 'Publication Year', 'Fiction']
+			tpd['Quantity'] = ltls
 			return render_template('results.html', table = tpd.to_html(), tp = 'str')
 	return render_template('booksearch.html', form = form)
 

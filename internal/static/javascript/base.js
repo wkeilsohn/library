@@ -4,11 +4,19 @@ function PageNumber(){
 	return(num);
 }
 
-function NumString(){
-	var num = PageNumber();
+function NumString(num){
 	num = num.toString();
-	num = "/static/pictures/".concat(num, ".jpg"); // The answer was just a slash... :(
+	num = "/static/pictures/".concat(num, ".jpg");
 	num = decodeURIComponent("url('".concat(num, "')"));
 	return(num);
 }
 
+function SetString(bol){
+	if (bol){
+		var pgnum = NumString(10);
+	}else{
+		var num = PageNumber();
+		var pgnum = NumString(num);
+	}
+	return(pgnum);
+}

@@ -92,8 +92,14 @@
   <a style="right: 10%" href="https://github.com/wkeilsohn/library"><i style="color: white;" class="fab fa-github"></i></a>
 </nav>
 	<script type="text/javascript">
-		var pic = NumString();
+    var height = document.body.clientHeight;
+		var pgheight = (height > 2500);
+    var pic = SetString(pgheight);
+    console.log(height);
 		document.body.style.backgroundImage = pic;
+    if (pgheight){
+      document.body.style.backgroundSize = "auto";
+    }
 	</script>
 </body>
 </html>

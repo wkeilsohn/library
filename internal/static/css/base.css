@@ -1,7 +1,7 @@
 body{
 	height: 100%;
 	background-position: center;
-	background-repeat: no-repeat;
+/*	background-repeat: no-repeat; */ /* Note sure about this...*/
 	background-size: cover;
 	background-color: #e474f2;
 }
@@ -45,6 +45,7 @@ input[type=text], select, textarea{
 table{
 	text-align: center;
 	margin: 0 auto;
+	float: center;
 }
 
 .flashed_messages{
@@ -55,4 +56,12 @@ table{
 	margin-right: auto;
 	margin-left: auto;
 	float: center;
+}
+
+tr{
+	text-align: center;
+}
+
+th{
+	text-align: center;
 }

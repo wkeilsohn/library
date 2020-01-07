@@ -41,7 +41,7 @@
               <a class="dropdown-item" href="{{url_for('publisher')}}">Publishers</a>
               <a class="dropdown-item" href="{{url_for('books')}}">Books</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{{url_for('item')}}">New Inventory</a>
+              <a class="dropdown-item" href="{{url_for('item')}}">Inventory</a>
             </div>
         </li>
         <li class="nav-item">
@@ -95,7 +95,6 @@
     var height = document.body.clientHeight;
 		var pgheight = (height > 2500);
     var pic = SetString(pgheight);
-    console.log(height);
 		document.body.style.backgroundImage = pic;
     if (pgheight){
       document.body.style.backgroundSize = "auto";

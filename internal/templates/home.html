@@ -1,7 +1,41 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
+{% block content%}
 <div class="home">
-	{% block content %}
-		<p><i> Welcome Home, good hunter.</i></p>
-	{% endblock %}
+	<div id="welcome">
+		<h1 style="border-bottom: 2px solid;">Welcome Home</h1>
+	</div>
+	<table style="border: none;">
+		<tr style="border-bottom: 2px solid;">
+			<th><h4>Query</h4></th>
+			<th><h4>Contribute</h4></th>
+		</tr>
+		<tr>
+			<td><a href = "{{url_for('authorsearch')}}"class="btn btn-light">Authors</a></td>
+			<td><a href = "{{url_for('author')}}"class="btn btn-light">Authors</a></td>
+		</tr>
+		<tr>
+			<td><a href = "{{url_for('publishersearch')}}"class="btn btn-light">Publishers</a></td>
+			<td><a href = "{{url_for('publisher')}}"class="btn btn-light">Publishers</a></td>
+		</tr>
+		<tr>
+			<td><a href = "{{url_for('booksearch')}}"class="btn btn-light">Books</a></td>
+			<td><a href = "{{url_for('books')}}"class="btn btn-light">Books</a></td>
+		</tr>
+	</table>
+	<table style="border: none;">
+		<tr>
+			<th style="border-bottom: 2px solid;"><h5>Inventory Management</h5></th>
+		</tr>
+	</table>
+	<table style="border: none;">
+		<tr>
+			<td><a href = "{{url_for('item')}}"class="btn btn-light">Add</a></td>
+			<td><a href = "{{url_for('delbook')}}"class="btn btn-light">Delete</a></td>
+		</tr>
+	</table>
 </div>
+<script type="text/javascript">
+	console.log('And the dragons were no more.')
+</script>
+{% endblock %}

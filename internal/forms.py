@@ -86,7 +86,6 @@ class BookLookupForm(FlaskForm):
 	Submit = SubmitField('Search')
 
 class ContactForm(FlaskForm):
-	Name = StringField('Name',  validators=[DataRequired()])
 	Email = StringField('Email',  validators=[DataRequired(), Email()])
 	Subject = StringField('Subject',  validators=[DataRequired()])
 	Message = TextAreaField('Message',  validators=[DataRequired()])

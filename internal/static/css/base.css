@@ -25,6 +25,11 @@ body{
 
 }
 
+#welcome{
+	display: inline-block;
+	white-space: nowrap;
+}
+
 p{
 	width: 80%;
 	max-width: 80%
@@ -63,5 +68,9 @@ tr{
 }
 
 th{
+	text-align: center;
+}
+
+td{
 	text-align: center;
 }

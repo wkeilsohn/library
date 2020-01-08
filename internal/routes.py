@@ -11,7 +11,7 @@ from flask_mail import Message, Mail
 from config import ADMINS
 import io
 
-@app.route("/") # Good...Just add Search/Navigation Features.
+@app.route("/")
 @app.route("/home/")
 @login_required
 def home():

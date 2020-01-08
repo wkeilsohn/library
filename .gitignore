@@ -1,7 +1,6 @@
 bin/
-lib/
 __pycache__/
-include/
+lib/
 migrations/
 app.db
 Add_Data/

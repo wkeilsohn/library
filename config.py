@@ -19,4 +19,4 @@ class Config(object):
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
 
 # Addresses
-ADMINS = ['kingwilliam42@gmail.com'] # change this later once it works.
+ADMINS = ['keilsohn1@ix.netcom.com', 'librarywebdeveloper@gmail.com']

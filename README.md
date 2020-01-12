@@ -7,7 +7,7 @@ A python flask web application that allows for the quering and management of a c
 
 Currently the application is deployed on Heroku. One can view it here:
 
-<->
+https://olibrary.herokuapp.com/home/
 
 ## Built With:
 
